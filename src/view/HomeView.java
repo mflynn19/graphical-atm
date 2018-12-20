@@ -102,7 +102,7 @@ public class HomeView extends JPanel implements ActionListener {
 		Object source = e.getSource();
 		if (source.equals(logoutButton)) {
 			manager.shutdown();
-			initialize();
+			manager.switchTo(ATM.LOGIN_VIEW);
 			//set bank account to null?
 		}
 		else {
