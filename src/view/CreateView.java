@@ -1,11 +1,17 @@
 package view;
 
+import java.awt.Component;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 import controller.ViewManager;
 
@@ -13,7 +19,8 @@ import controller.ViewManager;
 public class CreateView extends JPanel implements ActionListener {
 	
 	private ViewManager manager;		// manages interactions between the views, model, and database
-	
+	private JTextField FnameField;
+	private JTextField LnameField;
 	/**
 	 * Constructs an instance (or object) of the CreateView class.
 	 * 
@@ -49,6 +56,37 @@ public class CreateView extends JPanel implements ActionListener {
 		//
 		// feel free to use my layout in LoginView as an example for laying out and
 		// positioning your components.
+		
+	}
+	
+	private void initFnameField() {
+		JLabel label = new JLabel("First Name", SwingConstants.RIGHT);
+		label.setBounds(100, 140, 95, 35);
+		label.setLabelFor(FnameField);
+		label.setFont(new Font("DialogInput", Font.BOLD, 14));
+		
+		FnameField = new JTextField(20);
+		FnameField.setBounds(205, 140, 200, 35);
+		
+		this.add(label);
+		this.add(FnameField);
+	}
+	
+	private void initLnameField() {
+		JLabel label = new JLabel("Last Name", SwingConstants.RIGHT);
+		label.setBounds(100, 140, 95, 35);
+		label.setLabelFor(LnameField);
+		label.setFont(new Font("DialogInput", Font.BOLD, 14));
+		
+		FnameField = new JTextField(20);
+		FnameField.setBounds(205, 140, 200, 35);
+		
+		this.add(label);
+		this.add(LnameField);
+	}
+	
+	private void initBirthdayField() {
+		//find a date picker function of some kind 
 	}
 	
 	/*
