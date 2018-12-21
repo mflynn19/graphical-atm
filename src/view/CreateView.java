@@ -6,6 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.util.Arrays;
+import java.util.stream.IntStream;
 
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -26,6 +28,8 @@ public class CreateView extends JPanel implements ActionListener {
 	private Component StreetField;
 	private JTextField BirthdayField;
 	private Component CityField;
+	private JTextField StateField;
+	private JTextField ZipField;
 	/**
 	 * Constructs an instance (or object) of the CreateView class.
 	 * 
@@ -46,13 +50,16 @@ public class CreateView extends JPanel implements ActionListener {
 	 */
 	
 	private void initialize() {
+		this.setLayout(null);
 		
-		// TODO
-		//
-		// this is a placeholder for this view and should be removed once you start
-		// building the CreateView.
-		
-		this.add(new javax.swing.JLabel("CreateView", javax.swing.SwingConstants.CENTER));
+		initFnameField();
+		initLnameField();
+		initPhoneField();
+		initStreetField();
+		initBirthdayField();
+		initCityField();
+		initStateField();
+		initZipField();
 		
 		// TODO
 		//
@@ -66,12 +73,12 @@ public class CreateView extends JPanel implements ActionListener {
 	
 	private void initFnameField() {
 		JLabel label = new JLabel("First Name", SwingConstants.RIGHT);
-		label.setBounds(100, 140, 95, 35);
+		label.setBounds(100, 10, 95, 35);
 		label.setLabelFor(FnameField);
 		label.setFont(new Font("DialogInput", Font.BOLD, 14));
 		
-		FnameField = new JTextField(20);
-		FnameField.setBounds(205, 140, 200, 35);
+		FnameField = new JTextField(25);
+		FnameField.setBounds(205, 10, 200, 35);
 		
 		this.add(label);
 		this.add(FnameField);
@@ -79,13 +86,13 @@ public class CreateView extends JPanel implements ActionListener {
 	
 	private void initLnameField() {
 		JLabel label = new JLabel("Last Name", SwingConstants.RIGHT);
-		label.setBounds(100, 140, 95, 35);
+		label.setBounds(100, 50, 95, 35);
 		//x, y, width, height starts at 0,0 top left
 		label.setLabelFor(LnameField);
 		label.setFont(new Font("DialogInput", Font.BOLD, 14));
 		
-		FnameField = new JTextField(20);
-		FnameField.setBounds(200, 140, 200, 35);
+		LnameField = new JTextField(25);
+		LnameField.setBounds(205, 50, 200, 35);
 		
 		this.add(label);
 		this.add(LnameField);
@@ -96,43 +103,48 @@ public class CreateView extends JPanel implements ActionListener {
 		String[] months = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
 		JComboBox<String> first = new JComboBox<String>(months);
 		first.addActionListener(this);
-		BirthdayField = new JTextField(20);
-		BirthdayField.setBounds(205, 140, 200, 35);
+		first.setBounds(205, 90, 95, 35);
 		this.add(first);
-		this.add(BirthdayField);
-		
+		first.setVisible(true);
 		
 		String[] days = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" };
 		JComboBox<String> second = new JComboBox<String>(days);
 		second.addActionListener(this);
-		BirthdayField = new JTextField(20);
-		BirthdayField.setBounds(205, 140, 200, 35);
+		second.setBounds(235, 90, 95, 35);
 		this.add(second);
-		this.add(BirthdayField);
+		second.setVisible(true);
+		
+		int[] years = IntStream.range(1900, 2019).toArray();
+		String[] stringYears = Arrays.toString(years).split("[\\[\\]]")[1].split(",");
+		JComboBox<String> third = new JComboBox<String>(stringYears);
+		third.addActionListener(this);
+		third.setBounds(275, 90, 95, 35);
+		this.add(third);
+		third.setVisible(true);
 	}
 	
 	//needs to be three separate boxes!!!
 	private void initPhoneField() {
 		JLabel label = new JLabel("Phone", SwingConstants.RIGHT);
-		label.setBounds(100, 140, 95, 35);
+		label.setBounds(100, 130, 95, 35);
 		label.setLabelFor(PhoneField);
 		label.setFont(new Font("DialogInput", Font.BOLD, 14));
 		
 		PhoneField = new JTextField(20);
-		PhoneField.setBounds(205, 140, 200, 35);
+		PhoneField.setBounds(205, 130, 200, 35);
 		
 		this.add(label);
 		this.add(PhoneField);
 	}
 	
 	private void initStreetField() {
-		JLabel label = new JLabel("Street Address", SwingConstants.RIGHT);
-		label.setBounds(100, 140, 95, 35);
+		JLabel label = new JLabel("Address", SwingConstants.RIGHT);
+		label.setBounds(100, 170, 95, 35);
 		label.setLabelFor(StreetField);
 		label.setFont(new Font("DialogInput", Font.BOLD, 14));
 		
-		StreetField = new JTextField(20);
-		StreetField.setBounds(205, 140, 200, 35);
+		StreetField = new JTextField(30);
+		StreetField.setBounds(205, 170, 200, 35);
 		
 		this.add(label);
 		this.add(StreetField);
@@ -140,25 +152,37 @@ public class CreateView extends JPanel implements ActionListener {
 	
 	private void initCityField() {
 		JLabel label = new JLabel("City", SwingConstants.RIGHT);
-		label.setBounds(100, 140, 95, 35);
+		label.setBounds(100, 210, 95, 35);
 		label.setLabelFor(CityField);
 		label.setFont(new Font("DialogInput", Font.BOLD, 14));
 		
-		CityField = new JTextField(20);
-		CityField.setBounds(205, 140, 200, 35);
+		CityField = new JTextField(30);
+		CityField.setBounds(205, 210, 200, 35);
 		
 		this.add(label);
 		this.add(CityField);
 	}
 	
-	private void initState() {
-		String[] months = { "AK", "AL", "AR", "AZ", "CA", "CO", "CT", "DE", "FL", "GA", "HI", "IA", "ID" };
-		JComboBox<String> first = new JComboBox<String>(months);
-		first.addActionListener(this);
-		BirthdayField = new JTextField(20);
-		BirthdayField.setBounds(205, 140, 200, 35);
-		this.add(first);
-		this.add(BirthdayField);
+	private void initStateField() {
+		String[] states = { "AK", "AL", "AR", "AZ", "CA", "CO", "CT", "DE", "FL", "GA", "HI", "IA", "ID", "IL", "IN", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY" };
+		JComboBox<String> initial = new JComboBox<String>(states);
+		initial.addActionListener(this);
+		initial.setBounds(205, 250, 200, 35);
+		this.add(initial);
+		initial.setVisible(true);
+	}
+	
+	private void initZipField() {
+		JLabel label = new JLabel("ZIP", SwingConstants.RIGHT);
+		label.setBounds(100, 290, 95, 35);
+		label.setLabelFor(ZipField);
+		label.setFont(new Font("DialogInput", Font.BOLD, 14));
+		
+		ZipField = new JTextField(30);
+		ZipField.setBounds(205, 290, 200, 35);
+		
+		this.add(label);
+		this.add(ZipField);
 	}
 	
 	/*
