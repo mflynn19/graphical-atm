@@ -9,13 +9,13 @@ import java.io.ObjectOutputStream;
 import java.util.Arrays;
 import java.util.stream.IntStream;
 
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-
 import controller.ViewManager;
 
 @SuppressWarnings("serial")
@@ -30,6 +30,11 @@ public class CreateView extends JPanel implements ActionListener {
 	private Component CityField;
 	private JTextField StateField;
 	private JTextField ZipField;
+	private JTextField APhoneField;
+	private JTextField BPhoneField;
+	private JTextField PINField;
+	private JButton CancelButton;
+	private JButton CreateButton;
 	/**
 	 * Constructs an instance (or object) of the CreateView class.
 	 * 
@@ -55,20 +60,16 @@ public class CreateView extends JPanel implements ActionListener {
 		initFnameField();
 		initLnameField();
 		initPhoneField();
+		initAPhoneField();
+		initBPhoneField();
 		initStreetField();
 		initBirthdayField();
 		initCityField();
 		initStateField();
 		initZipField();
-		
-		// TODO
-		//
-		// this is where you should build the CreateView (i.e., all the components that
-		// allow the user to enter his or her information and create a new account).
-		//
-		// feel free to use my layout in LoginView as an example for laying out and
-		// positioning your components.
-		
+		initPINField();
+		initCancelButton();
+		initCreateButton();
 	}
 	
 	private void initFnameField() {
@@ -99,6 +100,12 @@ public class CreateView extends JPanel implements ActionListener {
 	}
 	
 	private void initBirthdayField() {
+		JLabel label = new JLabel("Birthdate", SwingConstants.RIGHT);
+		label.setBounds(100, 90, 95, 35);
+		label.setLabelFor(BirthdayField);
+		label.setFont(new Font("DialogInput", Font.BOLD, 14));
+		this.add(label);
+		
 		//do three combo boxes with months days and years
 		String[] months = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
 		JComboBox<String> first = new JComboBox<String>(months);
@@ -131,10 +138,24 @@ public class CreateView extends JPanel implements ActionListener {
 		label.setFont(new Font("DialogInput", Font.BOLD, 14));
 		
 		PhoneField = new JTextField(20);
-		PhoneField.setBounds(205, 130, 200, 35);
+		PhoneField.setBounds(205, 130, 50, 35);
 		
 		this.add(label);
 		this.add(PhoneField);
+	}
+	
+	private void initAPhoneField() {
+		APhoneField = new JTextField(20);
+		APhoneField.setBounds(245, 130, 50, 35);
+		
+		this.add(APhoneField);
+	}
+	
+	private void initBPhoneField() {
+		BPhoneField = new JTextField(20);
+		BPhoneField.setBounds(285, 130, 50, 35);
+		
+		this.add(BPhoneField);
 	}
 	
 	private void initStreetField() {
@@ -164,6 +185,12 @@ public class CreateView extends JPanel implements ActionListener {
 	}
 	
 	private void initStateField() {
+		JLabel label = new JLabel("State", SwingConstants.RIGHT);
+		label.setBounds(100, 250, 95, 35);
+		label.setLabelFor(StateField);
+		label.setFont(new Font("DialogInput", Font.BOLD, 14));
+		this.add(label);
+		
 		String[] states = { "AK", "AL", "AR", "AZ", "CA", "CO", "CT", "DE", "FL", "GA", "HI", "IA", "ID", "IL", "IN", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY" };
 		JComboBox<String> initial = new JComboBox<String>(states);
 		initial.addActionListener(this);
@@ -183,6 +210,36 @@ public class CreateView extends JPanel implements ActionListener {
 		
 		this.add(label);
 		this.add(ZipField);
+	}
+	
+	private void initPINField() {
+		JLabel label = new JLabel("PIN", SwingConstants.RIGHT);
+		label.setBounds(100, 330, 95, 35);
+		label.setLabelFor(PINField);
+		label.setFont(new Font("DialogInput", Font.BOLD, 14));
+		
+		JPasswordField PINField = new JPasswordField();
+	    PINField.setEchoChar('*');
+		PINField.setBounds(205, 330, 50, 35);
+		
+		this.add(label);
+		this.add(PINField);
+	}
+	
+	private void initCancelButton() {	
+		CancelButton = new JButton("Cancel");
+		CancelButton.setBounds(305, 370, 100, 35);
+		CancelButton.addActionListener(this);
+		
+		this.add(CancelButton);
+	}
+	
+	private void initCreateButton() {	
+		CreateButton = new JButton("Confirm");
+		CreateButton.setBounds(205, 370, 100, 35);
+		CreateButton.addActionListener(this);
+		
+		this.add(CreateButton);
 	}
 	
 	/*
