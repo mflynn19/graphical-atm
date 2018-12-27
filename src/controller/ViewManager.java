@@ -16,7 +16,7 @@ public class ViewManager {
 	private Database db;					// a reference to the database
 	private BankAccount account;			// the user's bank account
 	private BankAccount destination;		// an account to which the user can transfer funds
-	
+
 	/**
 	 * Constructs an instance (or object) of the ViewManager class.
 	 * 
@@ -47,7 +47,8 @@ public class ViewManager {
 				lv.updateErrorMessage("Invalid account number and/or PIN.");
 			} else {
 				switchTo(ATM.HOME_VIEW);
-				
+				//pull name from database?
+				JOptionPane.showMessageDialog(null, "Welcome ");
 				LoginView lv = ((LoginView) views.getComponents()[ATM.LOGIN_VIEW_INDEX]);
 				lv.updateErrorMessage("");
 			}

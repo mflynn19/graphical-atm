@@ -1,12 +1,18 @@
 package view;
 
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 import controller.ViewManager;
 
@@ -15,7 +21,13 @@ public class HomeView extends JPanel implements ActionListener {
 	
 	private ViewManager manager;		// manages interactions between the views, model, and database
 	private JButton logoutButton;
-	
+	private JButton DepositButton;
+	private JButton WithdrawlButton;
+	private JButton TransferButton;
+	private JButton CloseButton;
+	private JButton InfoButton;
+	private JLabel BalanceLabel;
+
 	/**
 	 * Constructs an instance (or objects) of the HomeView class.
 	 * 
@@ -27,21 +39,6 @@ public class HomeView extends JPanel implements ActionListener {
 		
 		this.manager = manager;
 		initialize();
-		initLogoutButton();
-	}
-	
-
-	/*
-	 * mf-- Initializes the components needed for the logout button.
-	 */
-	
-	private void initLogoutButton() {	
-		logoutButton = new JButton("Log Out");
-		logoutButton.setBounds(205, 210, 200, 35);
-		logoutButton.addActionListener(this);
-		
-		this.add(logoutButton);
-		initialize();
 	}
 	
 	///////////////////// PRIVATE METHODS /////////////////////////////////////////////
@@ -51,22 +48,71 @@ public class HomeView extends JPanel implements ActionListener {
 	 */
 	
 	private void initialize() {
+		this.setLayout(null);
+		initDepositButton();
+		initWithdrawlButton();
+		initTransferButton();
+		initInfoButton();
+		initCloseButton();
+		initLogoutButton();
+		initBalanceLabel();
+	}
+	
+	private void initDepositButton() {	
+		DepositButton = new JButton("Deposit");
+		DepositButton.setBounds(10, 10, 120, 35);
+		DepositButton.addActionListener(this);
 		
-		// TODO
-		//
-		// this is a placeholder for this view and should be removed once you start
-		// building the HomeView.
+		this.add(DepositButton);
+	}
+	
+	private void initWithdrawlButton() {	
+		WithdrawlButton = new JButton("Withdrawl");
+		WithdrawlButton.setBounds(10, 60, 120, 35);
+		WithdrawlButton.addActionListener(this);
 		
-		this.add(new javax.swing.JLabel("HomeView", javax.swing.SwingConstants.CENTER));
+		this.add(WithdrawlButton);
+	}
+	
+	private void initTransferButton() {	
+		TransferButton = new JButton("Transfer");
+		TransferButton.setBounds(10, 110, 120, 35);
+		TransferButton.addActionListener(this);
 		
-		// TODO
-		//
-		// this is where you should build the HomeView (i.e., all the components that
-		// allow the user to interact with the ATM - deposit, withdraw, transfer, etc.).
-		//
-		// feel free to use my layout in LoginView as an example for laying out and
-		// positioning your components.
+		this.add(TransferButton);
+	}
+	
+	private void initInfoButton() {	
+		InfoButton = new JButton("Personal Info");
+		InfoButton.setBounds(10, 160, 120, 35);
+		InfoButton.addActionListener(this);
 		
+		this.add(InfoButton);
+	}
+	
+	private void initCloseButton() {	
+		CloseButton = new JButton("Close Account");
+		CloseButton.setBounds(10, 210, 120, 35);
+		CloseButton.addActionListener(this);
+		
+		this.add(CloseButton);
+	}
+	
+	private void initLogoutButton() {	
+		logoutButton = new JButton("Log Out");
+		logoutButton.setBounds(10, 260, 120, 35);
+		logoutButton.addActionListener(this);
+		
+		this.add(logoutButton);
+	}
+	
+	private void initBalanceLabel() {
+		//reference database and format balance as $###,####.##
+		JLabel BalanceLabel = new JLabel("Balance:", SwingConstants.RIGHT);
+		BalanceLabel.setBounds(150, 10, 100, 35);
+		BalanceLabel.setFont(new Font("DialogInput", Font.ITALIC, 14));
+		
+		this.add(BalanceLabel);
 	}
 	
 	/*
@@ -91,19 +137,10 @@ public class HomeView extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		// TODO
-		//
-		// this is where you'll setup your action listener, which is responsible for
-		// responding to actions the user might take in this view (an action can be a
-		// user clicking a button, typing in a textfield, etc.).
-		//
-		// feel free to use my action listener in LoginView.java as an example.
-		
 		Object source = e.getSource();
 		if (source.equals(logoutButton)) {
 			manager.shutdown();
 			manager.switchTo(ATM.LOGIN_VIEW);
-			//set bank account to null?
 		}
 		else {
 			System.err.println("ERROR: Action command not found (" + e.getActionCommand() + ")");

@@ -17,6 +17,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import controller.ViewManager;
+import data.Database;
 
 @SuppressWarnings("serial")
 public class CreateView extends JPanel implements ActionListener {
@@ -24,11 +25,11 @@ public class CreateView extends JPanel implements ActionListener {
 	private ViewManager manager;		// manages interactions between the views, model, and database
 	private JTextField FnameField;
 	private JTextField LnameField;
-	private Component PhoneField;
-	private Component StreetField;
-	private JTextField BirthdayField;
-	private Component CityField;
-	private JTextField StateField;
+	private JTextField PhoneField;
+	private JTextField StreetField;
+	private JComboBox<String> BirthdayField;
+	private JTextField CityField;
+	private JComboBox<String> StateField;
 	private JTextField ZipField;
 	private JTextField APhoneField;
 	private JTextField BPhoneField;
@@ -130,7 +131,6 @@ public class CreateView extends JPanel implements ActionListener {
 		third.setVisible(true);
 	}
 	
-	//needs to be three separate boxes!!!
 	private void initPhoneField() {
 		JLabel label = new JLabel("Phone", SwingConstants.RIGHT);
 		label.setBounds(100, 130, 95, 35);
@@ -138,7 +138,7 @@ public class CreateView extends JPanel implements ActionListener {
 		label.setFont(new Font("DialogInput", Font.BOLD, 14));
 		
 		PhoneField = new JTextField(20);
-		PhoneField.setBounds(205, 130, 50, 35);
+		PhoneField.setBounds(205, 130, 30, 35);
 		
 		this.add(label);
 		this.add(PhoneField);
@@ -146,14 +146,14 @@ public class CreateView extends JPanel implements ActionListener {
 	
 	private void initAPhoneField() {
 		APhoneField = new JTextField(20);
-		APhoneField.setBounds(245, 130, 50, 35);
+		APhoneField.setBounds(245, 130, 30, 35);
 		
 		this.add(APhoneField);
 	}
 	
 	private void initBPhoneField() {
 		BPhoneField = new JTextField(20);
-		BPhoneField.setBounds(285, 130, 50, 35);
+		BPhoneField.setBounds(285, 130, 40, 35);
 		
 		this.add(BPhoneField);
 	}
@@ -260,16 +260,35 @@ public class CreateView extends JPanel implements ActionListener {
 	 * 
 	 * @param e
 	 */
+	//private Database db;
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		//TODO actually make the create account work; make checks for wrong 
+		//values, figure out how to set nested combo boxes to null and PIN
+		Object source = e.getSource();
 		
-		// TODO
-		//
-		// this is where you'll setup your action listener, which is responsible for
-		// responding to actions the user might take in this view (an action can be a
-		// user clicking a button, typing in a textfield, etc.).
-		//
-		// feel free to use my action listener in LoginView.java as an example.
+		if (source.equals(CreateButton)) {
+			//with db make an account
+			//db.insertAccount(null);
+			manager.switchTo(ATM.HOME_VIEW);
+		}
+		else if (source.equals(CancelButton)) {
+			manager.switchTo(ATM.LOGIN_VIEW);
+			FnameField.setText(null);
+			LnameField.setText(null);
+			PhoneField.setText(null);
+			APhoneField.setText(null);
+			BPhoneField.setText(null);
+			StreetField.setText(null);
+			//BirthdayField.setSelectedIndex(0);
+			CityField.setText(null);
+			//StateField.setSelectedIndex(0);
+			ZipField.setText(null);
+			PINField.setText(null);
+			
+		} else {
+			System.err.println("ERROR: Action command not found (" + e.getActionCommand() + ")");
+		}
 	}
 }
