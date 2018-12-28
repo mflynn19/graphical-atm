@@ -90,4 +90,24 @@ public class ViewManager {
 			e.printStackTrace();
 		}
 	}
+	
+	public void closeAccount() {
+		try {			
+			int choice = JOptionPane.showConfirmDialog(
+				views,
+				"Are you sure?",
+				"Close your account",
+				JOptionPane.YES_NO_OPTION,
+				JOptionPane.QUESTION_MESSAGE
+			);
+			
+			if (choice == 0) {
+				//db.closeAccount();
+				//figure out where bank number is hiding
+				System.exit(0);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

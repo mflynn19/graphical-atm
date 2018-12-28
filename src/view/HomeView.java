@@ -1,7 +1,5 @@
 package view;
 
-import java.awt.Color;
-import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,7 +8,6 @@ import java.io.ObjectOutputStream;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
@@ -49,6 +46,7 @@ public class HomeView extends JPanel implements ActionListener {
 	
 	private void initialize() {
 		this.setLayout(null);
+		
 		initDepositButton();
 		initWithdrawlButton();
 		initTransferButton();
@@ -138,8 +136,24 @@ public class HomeView extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		
 		Object source = e.getSource();
-		if (source.equals(logoutButton)) {
-			manager.shutdown();
+		
+		if (source.equals(DepositButton)) {
+			manager.switchTo(ATM.DEPOSIT_VIEW);
+		}
+		else if (source.equals(WithdrawlButton)) {
+			//manager.switchTo(ATM.WITHDRAWL_VIEW);
+		}
+		else if (source.equals(TransferButton)) {
+			//manager.switchTo(ATM.TRANSFER_VIEW);
+		}
+		else if (source.equals(InfoButton)) {
+			//manager.switchTo(ATM.INFORMATION_VIEW);
+		}
+		else if (source.equals(CloseButton)) {
+			manager.closeAccount();
+			manager.switchTo(ATM.LOGIN_VIEW);
+		}
+		else if (source.equals(logoutButton)) {
 			manager.switchTo(ATM.LOGIN_VIEW);
 		}
 		else {
