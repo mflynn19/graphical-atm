@@ -1,6 +1,5 @@
 package view;
 
-import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,7 +16,6 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import controller.ViewManager;
-import data.Database;
 
 @SuppressWarnings("serial")
 public class CreateView extends JPanel implements ActionListener {
@@ -110,14 +108,12 @@ public class CreateView extends JPanel implements ActionListener {
 		//do three combo boxes with months days and years
 		String[] months = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
 		JComboBox<String> first = new JComboBox<String>(months);
-		//first.addActionListener(this);
 		first.setBounds(205, 90, 95, 35);
 		this.add(first);
 		first.setVisible(true);
 		
 		String[] days = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" };
 		JComboBox<String> second = new JComboBox<String>(days);
-		//second.addActionListener(this);
 		second.setBounds(300, 90, 50, 35);
 		this.add(second);
 		second.setVisible(true);
@@ -125,7 +121,6 @@ public class CreateView extends JPanel implements ActionListener {
 		int[] years = IntStream.range(1900, 2019).toArray();
 		String[] stringYears = Arrays.toString(years).split("[\\[\\]]")[1].split(",");
 		JComboBox<String> third = new JComboBox<String>(stringYears);
-		//third.addActionListener(this);
 		third.setBounds(350, 90, 95, 35);
 		this.add(third);
 		third.setVisible(true);
@@ -264,13 +259,11 @@ public class CreateView extends JPanel implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		//TODO actually make the create account work; make checks for wrong 
-		//values, figure out how to set nested combo boxes to null and PIN
 		Object source = e.getSource();
 		
 		if (source.equals(CreateButton)) {
-			//with db make an account
-			//db.insertAccount(null);
+			//check all the fields
+			//use max account number + 1 as the new bank account number in making a new account, somehow use view manager to do something
 			manager.switchTo(ATM.HOME_VIEW);
 		}
 		else if (e.getActionCommand().equals("Cancel")) {
