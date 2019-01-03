@@ -210,6 +210,24 @@ public class Database {
 	}
 	
 	/**
+	 * Retrieves the largest account number in the database.
+	 * 
+	 * @return
+	 * @throws SQLException 
+	 */
+	
+	public long getMaxAccountNumber() throws SQLException {
+		stmt = conn.createStatement();
+		rs = stmt.executeQuery("SELECT MAX(account_number) FROM accounts");
+		
+		if (rs.next()) {
+			return rs.getLong(1);
+		} else {
+			return -1;
+		}
+	}
+	
+	/**
 	 * Shuts down the database, releasing all allocated resources.
 	 * 
 	 * @throws SQLException

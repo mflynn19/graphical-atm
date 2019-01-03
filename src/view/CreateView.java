@@ -110,23 +110,23 @@ public class CreateView extends JPanel implements ActionListener {
 		//do three combo boxes with months days and years
 		String[] months = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
 		JComboBox<String> first = new JComboBox<String>(months);
-		first.addActionListener(this);
+		//first.addActionListener(this);
 		first.setBounds(205, 90, 95, 35);
 		this.add(first);
 		first.setVisible(true);
 		
 		String[] days = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" };
 		JComboBox<String> second = new JComboBox<String>(days);
-		second.addActionListener(this);
-		second.setBounds(235, 90, 95, 35);
+		//second.addActionListener(this);
+		second.setBounds(300, 90, 50, 35);
 		this.add(second);
 		second.setVisible(true);
 		
 		int[] years = IntStream.range(1900, 2019).toArray();
 		String[] stringYears = Arrays.toString(years).split("[\\[\\]]")[1].split(",");
 		JComboBox<String> third = new JComboBox<String>(stringYears);
-		third.addActionListener(this);
-		third.setBounds(275, 90, 95, 35);
+		//third.addActionListener(this);
+		third.setBounds(350, 90, 95, 35);
 		this.add(third);
 		third.setVisible(true);
 	}
@@ -193,7 +193,7 @@ public class CreateView extends JPanel implements ActionListener {
 		
 		String[] states = { "AK", "AL", "AR", "AZ", "CA", "CO", "CT", "DE", "FL", "GA", "HI", "IA", "ID", "IL", "IN", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY" };
 		JComboBox<String> initial = new JComboBox<String>(states);
-		initial.addActionListener(this);
+		//initial.addActionListener(this);
 		initial.setBounds(205, 250, 200, 35);
 		this.add(initial);
 		initial.setVisible(true);
@@ -273,20 +273,10 @@ public class CreateView extends JPanel implements ActionListener {
 			//db.insertAccount(null);
 			manager.switchTo(ATM.HOME_VIEW);
 		}
-		else if (source.equals(CancelButton)) {
+		else if (e.getActionCommand().equals("Cancel")) {
+			this.removeAll();
+			initialize();
 			manager.switchTo(ATM.LOGIN_VIEW);
-			FnameField.setText(null);
-			LnameField.setText(null);
-			PhoneField.setText(null);
-			APhoneField.setText(null);
-			BPhoneField.setText(null);
-			StreetField.setText(null);
-			//BirthdayField.setSelectedIndex(0);
-			CityField.setText(null);
-			//StateField.setSelectedIndex(0);
-			ZipField.setText(null);
-			PINField.setText(null);
-			
 		} else {
 			System.err.println("ERROR: Action command not found (" + e.getActionCommand() + ")");
 		}
