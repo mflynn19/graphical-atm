@@ -112,13 +112,11 @@ public class ViewManager {
 		}
 	}
 	
-	public void createAccount() {
-		try {
-			//psure this is wrong
-			db.insertAccount(db.getAccount(db.getMaxAccountNumber()));
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public long maxAccountNumber() throws SQLException {
+		return db.getMaxAccountNumber();
 	}
+	public void insertAccountFR(BankAccount acc) {
+		db.insertAccount(acc);
+	}
+	
 }

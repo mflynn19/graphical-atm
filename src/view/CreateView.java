@@ -1,10 +1,12 @@
 package view;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.stream.IntStream;
 
@@ -16,24 +18,32 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import controller.ViewManager;
+import data.Database;
+import model.BankAccount;
+import model.User;
 
 @SuppressWarnings("serial")
 public class CreateView extends JPanel implements ActionListener {
 	
 	private ViewManager manager;		// manages interactions between the views, model, and database
+	private Database db;
 	private JTextField FnameField;
 	private JTextField LnameField;
 	private JTextField PhoneField;
 	private JTextField StreetField;
-	private JComboBox<String> BirthdayField;
+	private JComboBox<String> first;
+	private JComboBox<String> second;
+	private JComboBox<String> third;
 	private JTextField CityField;
-	private JComboBox<String> StateField;
+	private JComboBox<String> initial;
 	private JTextField ZipField;
 	private JTextField APhoneField;
 	private JTextField BPhoneField;
-	private JTextField PINField;
+	private JPasswordField PINField;
 	private JButton CancelButton;
 	private JButton CreateButton;
+	private JLabel errorLabel;	
+	
 	/**
 	 * Constructs an instance (or object) of the CreateView class.
 	 * 
@@ -69,6 +79,10 @@ public class CreateView extends JPanel implements ActionListener {
 		initPINField();
 		initCancelButton();
 		initCreateButton();
+		
+		errorLabel = new JLabel();
+		errorLabel.setText("You are missing a required field!");
+		this.add(errorLabel);
 	}
 	
 	private void initFnameField() {
@@ -101,26 +115,26 @@ public class CreateView extends JPanel implements ActionListener {
 	private void initBirthdayField() {
 		JLabel label = new JLabel("Birthdate", SwingConstants.RIGHT);
 		label.setBounds(100, 90, 95, 35);
-		label.setLabelFor(BirthdayField);
+		label.setLabelFor(first);
 		label.setFont(new Font("DialogInput", Font.BOLD, 14));
 		this.add(label);
 		
 		//do three combo boxes with months days and years
 		String[] months = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
-		JComboBox<String> first = new JComboBox<String>(months);
+		first = new JComboBox<String>(months);
 		first.setBounds(205, 90, 95, 35);
 		this.add(first);
 		first.setVisible(true);
 		
 		String[] days = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" };
-		JComboBox<String> second = new JComboBox<String>(days);
+		second = new JComboBox<String>(days);
 		second.setBounds(300, 90, 50, 35);
 		this.add(second);
 		second.setVisible(true);
 		
 		int[] years = IntStream.range(1900, 2019).toArray();
 		String[] stringYears = Arrays.toString(years).split("[\\[\\]]")[1].split(",");
-		JComboBox<String> third = new JComboBox<String>(stringYears);
+		third = new JComboBox<String>(stringYears);
 		third.setBounds(350, 90, 95, 35);
 		this.add(third);
 		third.setVisible(true);
@@ -182,13 +196,12 @@ public class CreateView extends JPanel implements ActionListener {
 	private void initStateField() {
 		JLabel label = new JLabel("State", SwingConstants.RIGHT);
 		label.setBounds(100, 250, 95, 35);
-		label.setLabelFor(StateField);
+		label.setLabelFor(initial);
 		label.setFont(new Font("DialogInput", Font.BOLD, 14));
 		this.add(label);
 		
 		String[] states = { "AK", "AL", "AR", "AZ", "CA", "CO", "CT", "DE", "FL", "GA", "HI", "IA", "ID", "IL", "IN", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY" };
-		JComboBox<String> initial = new JComboBox<String>(states);
-		//initial.addActionListener(this);
+		initial = new JComboBox<String>(states);
 		initial.setBounds(205, 250, 200, 35);
 		this.add(initial);
 		initial.setVisible(true);
@@ -213,7 +226,7 @@ public class CreateView extends JPanel implements ActionListener {
 		label.setLabelFor(PINField);
 		label.setFont(new Font("DialogInput", Font.BOLD, 14));
 		
-		JPasswordField PINField = new JPasswordField();
+		PINField = new JPasswordField();
 	    PINField.setEchoChar('*');
 		PINField.setBounds(205, 330, 50, 35);
 		
@@ -235,6 +248,15 @@ public class CreateView extends JPanel implements ActionListener {
 		CreateButton.addActionListener(this);
 		
 		this.add(CreateButton);
+	}
+	
+	private void initErrorLabel() {
+		errorLabel.setBounds(250, 400, 100, 35);
+		errorLabel.setFont(new Font("DialogInput", Font.ITALIC, 14));
+		errorLabel.setForeground(Color.RED);
+		
+		this.add(errorLabel);
+		
 	}
 	
 	/*
@@ -262,9 +284,63 @@ public class CreateView extends JPanel implements ActionListener {
 		Object source = e.getSource();
 		
 		if (source.equals(CreateButton)) {
-			//check all the fields
-			//use max account number + 1 as the new bank account number in making a new account, somehow use view manager to do something
-			manager.switchTo(ATM.HOME_VIEW);
+			String firstName = FnameField.getText();
+			String lastName = LnameField.getText();
+			String phone = PhoneField.getText() + APhoneField.getText() + BPhoneField.getText();
+			String street = StreetField.getText();
+			String month = first.getSelectedItem().toString();
+			String date = second.getSelectedItem().toString();
+			String year = third.getSelectedItem().toString();
+			String dob = year + month + date;
+			String city = CityField.getText();
+			String zipcode = ZipField.getText();
+			String state = initial.getSelectedItem().toString();
+			String pinNumber = PINField.getText();
+			
+			boolean create = true;
+
+			if (firstName.equals("") || lastName.equals("") || firstName.length() > 15 || lastName.length() > 20) {
+				errorLabel.setText("Incorrect name input. First Name: 1 character MIN - 15 character MAX. Last Name: 1 character MIN - 20 character MAX.");
+				create = false;
+			}
+			
+			/*if (month.equals("") || date.equals("") || year.equals("")) {
+				errorLabel.setText("Please select a birthdate.");
+				create = false;
+			}*/
+			
+			if(phone.length() != 10 || !phone.matches("[a-zA-Z]+")) {
+				errorLabel.setText("Please enter a 10 digit phone number.");
+				create = false;
+			}
+			
+			if (street.equals("") || city.equals("") || state.equals("") || zipcode.equals("") || !zipcode.matches("[a-zA-Z]+")) {
+				errorLabel.setText("Please enter all components of your address.");
+				create = false;
+			}
+			
+			if (pinNumber.equals("") || pinNumber.length() > 4 || !pinNumber.matches("[a-zA-Z]+")) {
+				errorLabel.setText("Please enter a 4 digit numerical PIN.");
+				create = false;
+			}
+			
+			long num = 0;
+			try {
+				num = manager.maxAccountNumber() + 1;
+			} 
+			catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			
+			if (create) {
+				User user = new User(Integer.parseInt(pinNumber), Integer.parseInt(dob), Long.parseLong(phone), firstName, lastName, street, city, state, zipcode);
+				BankAccount acc = new BankAccount('Y', num, 0, user);
+				manager.insertAccountFR(acc);
+				this.removeAll();
+				initialize();
+			}
+			
+			manager.switchTo(ATM.LOGIN_VIEW);
 		}
 		else if (e.getActionCommand().equals("Cancel")) {
 			this.removeAll();
