@@ -120,7 +120,7 @@ public class CreateView extends JPanel implements ActionListener {
 		this.add(label);
 		
 		//do three combo boxes with months days and years
-		String[] months = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
+		String[] months = { "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12" };
 		first = new JComboBox<String>(months);
 		first.setBounds(205, 90, 95, 35);
 		this.add(first);
@@ -296,6 +296,7 @@ public class CreateView extends JPanel implements ActionListener {
 			String zipcode = ZipField.getText();
 			String state = initial.getSelectedItem().toString();
 			String pinNumber = PINField.getText();
+			//idk whats going on with PIN now
 			
 			boolean create = true;
 
@@ -303,23 +304,23 @@ public class CreateView extends JPanel implements ActionListener {
 				errorLabel.setText("Incorrect name input. First Name: 1 character MIN - 15 character MAX. Last Name: 1 character MIN - 20 character MAX.");
 				create = false;
 			}
-			
+			//error with validation probably hereeee
 			if (month.equals("") || date.equals("") || year.equals("")) {
 				errorLabel.setText("Please select a birthdate.");
 				create = false;
 			}
 			
-			if(phone.length() != 10 || !phone.matches("[a-zA-Z]+")) {
+			if(phone.length() != 10 || phone.matches("[a-zA-Z]+")) {
 				errorLabel.setText("Please enter a 10 digit phone number.");
 				create = false;
 			}
-			
-			if (street.equals("") || city.equals("") || state.equals("") || zipcode.equals("") || !zipcode.matches("[a-zA-Z]+")) {
+			//error probably here with state tooooo
+			if (street.equals("") || city.equals("") || state.equals("") || zipcode.equals("") || zipcode.matches("[a-zA-Z]+")) {
 				errorLabel.setText("Please enter all components of your address.");
 				create = false;
 			}
 			
-			if (pinNumber.equals("") || pinNumber.length() > 4 || !pinNumber.matches("[a-zA-Z]+")) {
+			if (pinNumber.equals("") || pinNumber.length() > 4 || pinNumber.matches("[a-zA-Z]+")) {
 				errorLabel.setText("Please enter a 4 digit numerical PIN.");
 				create = false;
 			}
