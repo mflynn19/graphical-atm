@@ -248,7 +248,7 @@ public class Database {
         props.put("user", "user1");
         props.put("password", "user1");
 
-        conn = DriverManager.getConnection("jdbc:derby:atm;create=true", props);
+        conn = DriverManager.getConnection("jdbc:derby:/lib;create=true", props);
 	}
 	
 	/*
