@@ -304,10 +304,10 @@ public class CreateView extends JPanel implements ActionListener {
 				create = false;
 			}
 			
-			/*if (month.equals("") || date.equals("") || year.equals("")) {
+			if (month.equals("") || date.equals("") || year.equals("")) {
 				errorLabel.setText("Please select a birthdate.");
 				create = false;
-			}*/
+			}
 			
 			if(phone.length() != 10 || !phone.matches("[a-zA-Z]+")) {
 				errorLabel.setText("Please enter a 10 digit phone number.");
