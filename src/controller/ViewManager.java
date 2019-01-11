@@ -41,15 +41,14 @@ public class ViewManager {
 	
 	public void login(String accountNumber, char[] pin) {
 		try {
-			account = db.getAccount(Long.valueOf(accountNumber), Integer.valueOf(new String(pin)));
+			account = (db.getAccount(Long.valueOf(accountNumber), Integer.valueOf(new String(pin))));
 			
 			if (account == null) {
 				LoginView lv = ((LoginView) views.getComponents()[ATM.LOGIN_VIEW_INDEX]);
 				lv.updateErrorMessage("Invalid account number and/or PIN.");
 			} else {
 				switchTo(ATM.HOME_VIEW);
-				//pull name from database?
-				JOptionPane.showMessageDialog(null, "Welcome ");
+				JOptionPane.showMessageDialog(null, "Welcome " + account.getUser().getFirstName() + " " + account.getUser().getLastName());
 				LoginView lv = ((LoginView) views.getComponents()[ATM.LOGIN_VIEW_INDEX]);
 				lv.updateErrorMessage("");
 			}
@@ -118,5 +117,7 @@ public class ViewManager {
 	public void insertAccountFR(BankAccount acc) {
 		db.insertAccount(acc);
 	}
-	
+	public String AccoNumber() {
+		return Long.toString(account.getAccountNumber());
+	}
 }

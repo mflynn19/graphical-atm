@@ -1,6 +1,5 @@
 package view;
 
-import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,10 +15,10 @@ import javax.swing.SwingConstants;
 import controller.ViewManager;
 
 @SuppressWarnings("serial")
-public class DepositView extends JPanel implements ActionListener {
+public class WithdrawlView extends JPanel implements ActionListener {
 	
 	private ViewManager manager;		// manages interactions between the views, model, and database
-	private JTextField DepositField;
+	private JTextField WithdrawlField;
 	private JButton CancelButton;
 	private JButton ConfirmButton;
 	/**
@@ -28,7 +27,7 @@ public class DepositView extends JPanel implements ActionListener {
 	 * @param manager
 	 */
 	
-	public DepositView(ViewManager manager) {
+	public WithdrawlView(ViewManager manager) {
 		super();
 		
 		this.manager = manager;
@@ -44,22 +43,22 @@ public class DepositView extends JPanel implements ActionListener {
 	private void initialize() {
 		this.setLayout(null);
 		
-		initDepositField();
+		initWithdrawlField();
 		initCancelButton();
 		initConfirmButton();
 	}
 	
-	private void initDepositField() {
-		JLabel label = new JLabel("Deposit Amount", SwingConstants.RIGHT);
+	private void initWithdrawlField() {
+		JLabel label = new JLabel("Withdrawl Amount", SwingConstants.RIGHT);
 		label.setBounds(50, 100, 150, 35);
-		label.setLabelFor(DepositField);
+		label.setLabelFor(WithdrawlField);
 		label.setFont(new Font("DialogInput", Font.BOLD, 14));
 		
-		DepositField = new JTextField(35);
-		DepositField.setBounds(205, 100, 200, 35);
+		WithdrawlField = new JTextField(35);
+		WithdrawlField.setBounds(205, 100, 200, 35);
 		
 		this.add(label);
-		this.add(DepositField);
+		this.add(WithdrawlField);
 	}
 	
 	private void initCancelButton() {	

@@ -1,6 +1,5 @@
 package view;
 
-import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,19 +15,20 @@ import javax.swing.SwingConstants;
 import controller.ViewManager;
 
 @SuppressWarnings("serial")
-public class DepositView extends JPanel implements ActionListener {
+public class TransferView extends JPanel implements ActionListener {
 	
 	private ViewManager manager;		// manages interactions between the views, model, and database
-	private JTextField DepositField;
 	private JButton CancelButton;
 	private JButton ConfirmButton;
+	private JTextField TransferField;
+	private JTextField DestinationField;
 	/**
 	 * Constructs an instance (or object) of the CreateView class.
 	 * 
 	 * @param manager
 	 */
 	
-	public DepositView(ViewManager manager) {
+	public TransferView(ViewManager manager) {
 		super();
 		
 		this.manager = manager;
@@ -44,27 +44,41 @@ public class DepositView extends JPanel implements ActionListener {
 	private void initialize() {
 		this.setLayout(null);
 		
-		initDepositField();
+		initTransferField();
+		initDestinationField();
 		initCancelButton();
 		initConfirmButton();
 	}
 	
-	private void initDepositField() {
-		JLabel label = new JLabel("Deposit Amount", SwingConstants.RIGHT);
+	private void initTransferField() {
+		JLabel label = new JLabel("Transfer Amount:", SwingConstants.RIGHT);
 		label.setBounds(50, 100, 150, 35);
-		label.setLabelFor(DepositField);
+		label.setLabelFor(TransferField);
 		label.setFont(new Font("DialogInput", Font.BOLD, 14));
 		
-		DepositField = new JTextField(35);
-		DepositField.setBounds(205, 100, 200, 35);
+		TransferField = new JTextField(35);
+		TransferField.setBounds(205, 100, 200, 35);
 		
 		this.add(label);
-		this.add(DepositField);
+		this.add(TransferField);
+	}
+	
+	private void initDestinationField() {
+		JLabel label = new JLabel("Account Recieving:", SwingConstants.RIGHT);
+		label.setBounds(50, 150, 150, 35);
+		label.setLabelFor(DestinationField);
+		label.setFont(new Font("DialogInput", Font.BOLD, 14));
+		
+		DestinationField = new JTextField(35);
+		DestinationField.setBounds(205, 150, 200, 35);
+		
+		this.add(label);
+		this.add(DestinationField);
 	}
 	
 	private void initCancelButton() {	
 		CancelButton = new JButton("Cancel");
-		CancelButton.setBounds(305, 170, 100, 35);
+		CancelButton.setBounds(305, 200, 100, 35);
 		CancelButton.addActionListener(this);
 		
 		this.add(CancelButton);
@@ -72,7 +86,7 @@ public class DepositView extends JPanel implements ActionListener {
 	
 	private void initConfirmButton() {	
 		ConfirmButton = new JButton("Confirm");
-		ConfirmButton.setBounds(205, 170, 100, 35);
+		ConfirmButton.setBounds(205, 200, 100, 35);
 		ConfirmButton.addActionListener(this);
 		
 		this.add(ConfirmButton);
