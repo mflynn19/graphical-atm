@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -9,19 +10,24 @@ import java.io.ObjectOutputStream;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import controller.ViewManager;
+import model.BankAccount;
 
 @SuppressWarnings("serial")
 public class DepositView extends JPanel implements ActionListener {
 	
 	private ViewManager manager;		// manages interactions between the views, model, and database
+	private BankAccount account;
 	private JTextField DepositField;
 	private JButton CancelButton;
 	private JButton ConfirmButton;
+	private JLabel errorMessageLabel;
+
 	/**
 	 * Constructs an instance (or object) of the CreateView class.
 	 * 
@@ -78,6 +84,17 @@ public class DepositView extends JPanel implements ActionListener {
 		this.add(ConfirmButton);
 	}
 	
+	private void deposit() {
+		double amount = Double.parseDouble(DepositField.getText());
+		if (manager.deposit(amount) != ATM.SUCCESS) {
+			errorMessageLabel.setText("Invalid deposit amount.");
+		}
+		else {
+			JOptionPane.showMessageDialog(null, "You deposited $" + amount + ".");
+
+		}
+		
+	}
 	/*
 	 * CreateView is not designed to be serialized, and attempts to serialize will throw an IOException.
 	 * 
@@ -101,6 +118,11 @@ public class DepositView extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		Object source = e.getSource();
 		if (source.equals(CancelButton)) {
+			DepositField.setText(null);
+			manager.switchTo(ATM.HOME_VIEW);
+		}
+		if (source.equals(ConfirmButton)) {
+			deposit();
 			manager.switchTo(ATM.HOME_VIEW);
 		}
 	}

@@ -9,6 +9,7 @@ import javax.swing.JOptionPane;
 import data.Database;
 import model.BankAccount;
 import view.ATM;
+import view.HomeView;
 import view.LoginView;
 
 public class ViewManager {
@@ -48,7 +49,7 @@ public class ViewManager {
 				lv.updateErrorMessage("Invalid account number and/or PIN.");
 			} else {
 				switchTo(ATM.HOME_VIEW);
-				JOptionPane.showMessageDialog(null, "Welcome " + account.getUser().getFirstName() + " " + account.getUser().getLastName());
+				JOptionPane.showMessageDialog(null, "Welcome " + account.getUser().getFirstName() + " " + account.getUser().getLastName() + "! Your current account (" + account.getAccountNumber() + ") has a balance of " + account.getFBalance() + ".");
 				LoginView lv = ((LoginView) views.getComponents()[ATM.LOGIN_VIEW_INDEX]);
 				lv.updateErrorMessage("");
 			}
@@ -117,7 +118,10 @@ public class ViewManager {
 	public void insertAccountFR(BankAccount acc) {
 		db.insertAccount(acc);
 	}
-	public String AccoNumber() {
-		return Long.toString(account.getAccountNumber());
+	public BankAccount getAccount() {
+		return account;
+	}
+	public int deposit(double amount) {
+		return account.deposit(amount);
 	}
 }

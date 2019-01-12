@@ -183,6 +183,9 @@ public class BankAccount {
 	 * 
 	 * @return
 	 */
+	public String getFBalance() {
+		return NumberFormat.getCurrencyInstance(Locale.US).format(balance);
+	}
 	
 	@Override
 	public String toString() {

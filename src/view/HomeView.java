@@ -7,9 +7,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
 
 import controller.ViewManager;
 
@@ -23,7 +21,6 @@ public class HomeView extends JPanel implements ActionListener {
 	private JButton TransferButton;
 	private JButton CloseButton;
 	private JButton InfoButton;
-	private JLabel BalanceLabel;
 
 	/**
 	 * Constructs an instance (or objects) of the HomeView class.
@@ -53,7 +50,6 @@ public class HomeView extends JPanel implements ActionListener {
 		initInfoButton();
 		initCloseButton();
 		initLogoutButton();
-		initBalanceLabel();
 	}
 	
 	private void initDepositButton() {	
@@ -104,15 +100,6 @@ public class HomeView extends JPanel implements ActionListener {
 		this.add(logoutButton);
 	}
 	
-	private void initBalanceLabel() {
-		//reference database and format balance as $###,####.##
-		JLabel BalanceLabel = new JLabel("Balance:", SwingConstants.RIGHT);
-		BalanceLabel.setBounds(150, 10, 100, 35);
-		BalanceLabel.setFont(new Font("DialogInput", Font.ITALIC, 14));
-		
-		this.add(BalanceLabel);
-	}
-	
 	/*
 	 * HomeView is not designed to be serialized, and attempts to serialize will throw an IOException.
 	 * 
@@ -141,10 +128,10 @@ public class HomeView extends JPanel implements ActionListener {
 			manager.switchTo(ATM.DEPOSIT_VIEW);
 		}
 		else if (source.equals(WithdrawlButton)) {
-			//manager.switchTo(ATM.WITHDRAWL_VIEW);
+			manager.switchTo(ATM.WITHDRAWL_VIEW);
 		}
 		else if (source.equals(TransferButton)) {
-			//manager.switchTo(ATM.TRANSFER_VIEW);
+			manager.switchTo(ATM.TRANSFER_VIEW);
 		}
 		else if (source.equals(InfoButton)) {
 			//manager.switchTo(ATM.INFORMATION_VIEW);
@@ -160,4 +147,4 @@ public class HomeView extends JPanel implements ActionListener {
 			System.err.println("ERROR: Action command not found (" + e.getActionCommand() + ")");
 		}
 	}
-	}
+}
