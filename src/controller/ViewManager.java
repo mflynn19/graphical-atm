@@ -124,7 +124,10 @@ public class ViewManager {
 	public int deposit(double amount) {
 		return account.deposit(amount);
 	}
-	public void updateAcc(BankAccount account) {
+	public int withdraw(double amount) {
+		return account.withdraw(amount);
+	}
+	public void updateAcc() {
 		db.updateAccount(account);
 	}
 }

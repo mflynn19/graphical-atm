@@ -24,7 +24,6 @@ public class DepositView extends JPanel implements ActionListener {
 	
 	private ViewManager manager;		// manages interactions between the views, model, and database
 	private Database db;					// a reference to the database
-	private BankAccount account;
 	private JTextField DepositField;
 	private JButton CancelButton;
 	private JButton ConfirmButton;
@@ -120,9 +119,7 @@ public class DepositView extends JPanel implements ActionListener {
 				errorMessageLabel.setText("Invalid deposit amount.");
 			}
 			else {
-				//null pointer bc of account??
-				account.deposit(amount);
-				manager.updateAcc(account);
+				manager.updateAcc();
 				manager.switchTo(ATM.HOME_VIEW);
 			}
 			this.removeAll();

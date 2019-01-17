@@ -114,9 +114,8 @@ public class WithdrawlView extends JPanel implements ActionListener {
 				JOptionPane.showMessageDialog(null, "Please enter a valid amount to withdraw.");
 			}
 			else {
-				//null pointer here too
-				account.withdraw(number);
-				manager.updateAcc(account);
+				manager.withdraw(number);
+				manager.updateAcc();
 				manager.switchTo(ATM.HOME_VIEW);
 			}
 			this.removeAll();

@@ -7,12 +7,14 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import controller.ViewManager;
+import data.Database;
 import model.BankAccount;
 
 @SuppressWarnings("serial")
@@ -20,6 +22,7 @@ public class InformationView extends JPanel implements ActionListener {
 	
 	private ViewManager manager;		// manages interactions between the views, model, and database
 	private BankAccount account;
+	private Database db;
 	private JButton BackButton;
 	private JButton EditButton;
 	private JTextField AccountNumberField;
@@ -27,10 +30,12 @@ public class InformationView extends JPanel implements ActionListener {
 	private JTextField LastNameField;
 	private JTextField StreetAddressField;
 	private JTextField CityField;
-	private JTextField StateField;
+	private JComboBox<String> StateField;
 	private JTextField ZIPField;
 	private JTextField DOBField;
 	private JTextField PhoneField;
+	private JButton CancelButton;
+	private JButton SaveButton;
 
 
 
@@ -67,6 +72,8 @@ public class InformationView extends JPanel implements ActionListener {
 		initPhoneField();
 		initBackButton();
 		initEditButton();
+		initCancelButton();
+		initSaveButton();
 	}
 	
 	private void initAccountNumberField() {
@@ -151,18 +158,17 @@ public class InformationView extends JPanel implements ActionListener {
 	
 	private void initStateField() {
 		JLabel label = new JLabel("State", SwingConstants.RIGHT);
-		label.setBounds(30, 260, 150, 35);
+		label.setBounds(30, 260, 95, 35);
 		label.setLabelFor(StateField);
 		label.setFont(new Font("DialogInput", Font.BOLD, 14));
-		
-		StateField = new JTextField(35);
-		StateField.setBounds(190, 260, 200, 35);
-		
 		this.add(label);
+		
+		String[] states = { "AK", "AL", "AR", "AZ", "CA", "CO", "CT", "DE", "FL", "GA", "HI", "IA", "ID", "IL", "IN", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY" };
+		StateField = new JComboBox<String>(states);
+		StateField.setBounds(190, 260, 200, 35);
 		this.add(StateField);
-		//going to throw error in initialization
 		//WithdrawlField.setText(Long.toString(account.getAccountNumber()));
-		StateField.setEditable(false);
+		StateField.setEnabled(false);
 	}
 	
 	private void initZIPField() {
@@ -229,6 +235,26 @@ public class InformationView extends JPanel implements ActionListener {
 		this.add(EditButton);
 	}
 	
+	private void initCancelButton() {	
+		CancelButton = new JButton("Edit");
+		CancelButton.setBounds(270, 10, 100, 35);
+		CancelButton.addActionListener(this);	
+		
+		this.add(CancelButton);
+		CancelButton.setVisible(false);
+
+	}
+	
+	private void initSaveButton() {	
+		SaveButton = new JButton("Edit");
+		SaveButton.setBounds(160, 10, 100, 35);
+		SaveButton.addActionListener(this);	
+		
+		this.add(SaveButton);
+		SaveButton.setVisible(false);
+
+	}
+	
 	/*
 	 * CreateView is not designed to be serialized, and attempts to serialize will throw an IOException.
 	 * 
@@ -264,6 +290,15 @@ public class InformationView extends JPanel implements ActionListener {
 			PhoneField.setEditable(true);
 			//PINField.setEditable(true); doesn't exist here???
 			//add new buttons and dropdowns etc
+			CancelButton.setVisible(true);
+			SaveButton.setVisible(true);
+			if (source.equals(CancelButton)) {
+				this.removeAll();
+				this.initialize();
+			}
+			else if (source.equals(SaveButton)) {
+				manager.updateAcc();
+			}
 	}
 }
 }
