@@ -26,7 +26,6 @@ import model.User;
 public class CreateView extends JPanel implements ActionListener {
 	
 	private ViewManager manager;		// manages interactions between the views, model, and database
-	private Database db;
 	private JTextField FnameField;
 	private JTextField LnameField;
 	private JTextField PhoneField;

@@ -16,12 +16,14 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import controller.ViewManager;
+import data.Database;
 import model.BankAccount;
 
 @SuppressWarnings("serial")
 public class DepositView extends JPanel implements ActionListener {
 	
 	private ViewManager manager;		// manages interactions between the views, model, and database
+	private Database db;					// a reference to the database
 	private BankAccount account;
 	private JTextField DepositField;
 	private JButton CancelButton;
@@ -84,17 +86,6 @@ public class DepositView extends JPanel implements ActionListener {
 		this.add(ConfirmButton);
 	}
 	
-	private void deposit() {
-		double amount = Double.parseDouble(DepositField.getText());
-		if (manager.deposit(amount) != ATM.SUCCESS) {
-			errorMessageLabel.setText("Invalid deposit amount.");
-		}
-		else {
-			JOptionPane.showMessageDialog(null, "You deposited $" + amount + ".");
-
-		}
-		
-	}
 	/*
 	 * CreateView is not designed to be serialized, and attempts to serialize will throw an IOException.
 	 * 
@@ -120,10 +111,22 @@ public class DepositView extends JPanel implements ActionListener {
 		if (source.equals(CancelButton)) {
 			DepositField.setText(null);
 			manager.switchTo(ATM.HOME_VIEW);
+			this.removeAll();
+			this.initialize();
 		}
 		if (source.equals(ConfirmButton)) {
-			deposit();
-			manager.switchTo(ATM.HOME_VIEW);
+			double amount = Double.parseDouble(DepositField.getText());
+			if (manager.deposit(amount) != ATM.SUCCESS) {
+				errorMessageLabel.setText("Invalid deposit amount.");
+			}
+			else {
+				//null pointer bc of account??
+				account.deposit(amount);
+				manager.updateAcc(account);
+				manager.switchTo(ATM.HOME_VIEW);
+			}
+			this.removeAll();
+			this.initialize();
 		}
 	}
 }

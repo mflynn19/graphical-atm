@@ -117,5 +117,8 @@ public class TransferView extends JPanel implements ActionListener {
 		if (source.equals(CancelButton)) {
 			manager.switchTo(ATM.HOME_VIEW);
 		}
+		if (source.equals(ConfirmButton)) {
+			
+		}
 	}
 }

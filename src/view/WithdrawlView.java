@@ -8,16 +8,19 @@ import java.io.ObjectOutputStream;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import controller.ViewManager;
+import model.BankAccount;
 
 @SuppressWarnings("serial")
 public class WithdrawlView extends JPanel implements ActionListener {
 	
 	private ViewManager manager;		// manages interactions between the views, model, and database
+	private BankAccount account;
 	private JTextField WithdrawlField;
 	private JButton CancelButton;
 	private JButton ConfirmButton;
@@ -101,6 +104,23 @@ public class WithdrawlView extends JPanel implements ActionListener {
 		Object source = e.getSource();
 		if (source.equals(CancelButton)) {
 			manager.switchTo(ATM.HOME_VIEW);
+			this.removeAll();
+			this.initialize();
+		}
+		else if (source.equals(ConfirmButton)) {
+			String amount = WithdrawlField.getText();
+			double number = Double.parseDouble(amount);
+			if (amount == "") {
+				JOptionPane.showMessageDialog(null, "Please enter a valid amount to withdraw.");
+			}
+			else {
+				//null pointer here too
+				account.withdraw(number);
+				manager.updateAcc(account);
+				manager.switchTo(ATM.HOME_VIEW);
+			}
+			this.removeAll();
+			this.initialize();
 		}
 	}
 }

@@ -47,7 +47,8 @@ public class ViewManager {
 			if (account == null) {
 				LoginView lv = ((LoginView) views.getComponents()[ATM.LOGIN_VIEW_INDEX]);
 				lv.updateErrorMessage("Invalid account number and/or PIN.");
-			} else {
+			} 
+			else {
 				switchTo(ATM.HOME_VIEW);
 				JOptionPane.showMessageDialog(null, "Welcome " + account.getUser().getFirstName() + " " + account.getUser().getLastName() + "! Your current account (" + account.getAccountNumber() + ") has a balance of " + account.getFBalance() + ".");
 				LoginView lv = ((LoginView) views.getComponents()[ATM.LOGIN_VIEW_INDEX]);
@@ -103,8 +104,7 @@ public class ViewManager {
 			);
 			
 			if (choice == 0) {
-				//db.closeAccount();
-				//figure out where bank number is hiding
+				db.closeAccount(account);
 				System.exit(0);
 			}
 		} catch (Exception e) {
@@ -123,5 +123,8 @@ public class ViewManager {
 	}
 	public int deposit(double amount) {
 		return account.deposit(amount);
+	}
+	public void updateAcc(BankAccount account) {
+		db.updateAccount(account);
 	}
 }

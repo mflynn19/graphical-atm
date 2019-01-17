@@ -32,6 +32,7 @@ public class ATM extends JFrame {
 	public final static String DEPOSIT_VIEW = "DEPOSIT_VIEW";
 	public final static String WITHDRAWL_VIEW = "WITHDRAWL_VIEW";
 	public final static String TRANSFER_VIEW = "TRANSFER_VIEW";
+	public final static String INFORMATION_VIEW = "INFORMATION_VIEW";
 
 
 	
@@ -45,8 +46,7 @@ public class ATM extends JFrame {
 	public final static int DEPOSIT_VIEW_INDEX = 3;
 	public final static int WITHDRAWL_VIEW_INDEX = 4;
 	public final static int TRANSFER_VIEW_INDEX = 5;
-
-
+	public final static int INFORMATION_VIEW_INDEX = 6;
 		
 	/**
 	 * Constructs an instance (or object) of the ATM class.
@@ -74,6 +74,7 @@ public class ATM extends JFrame {
 		views.add(new DepositView(manager), DEPOSIT_VIEW);
 		views.add(new WithdrawlView(manager), WITHDRAWL_VIEW);
 		views.add(new TransferView(manager), TRANSFER_VIEW);
+		views.add(new InformationView(manager), INFORMATION_VIEW);
 
 
 		

@@ -1,12 +1,12 @@
 package view;
 
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import controller.ViewManager;
@@ -134,14 +134,20 @@ public class HomeView extends JPanel implements ActionListener {
 			manager.switchTo(ATM.TRANSFER_VIEW);
 		}
 		else if (source.equals(InfoButton)) {
-			//manager.switchTo(ATM.INFORMATION_VIEW);
+			manager.switchTo(ATM.INFORMATION_VIEW);
 		}
 		else if (source.equals(CloseButton)) {
 			manager.closeAccount();
 			manager.switchTo(ATM.LOGIN_VIEW);
 		}
 		else if (source.equals(logoutButton)) {
-			manager.switchTo(ATM.LOGIN_VIEW);
+			int choice = JOptionPane.showConfirmDialog(null,"Are you sure you would like to logout?", "Confirmation", JOptionPane.YES_NO_OPTION);
+			if (choice == 0) {
+				manager.switchTo(ATM.LOGIN_VIEW);
+			}
+			else {
+				manager.switchTo(ATM.HOME_VIEW);
+			}
 		}
 		else {
 			System.err.println("ERROR: Action command not found (" + e.getActionCommand() + ")");
