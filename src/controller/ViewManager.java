@@ -10,6 +10,7 @@ import data.Database;
 import model.BankAccount;
 import view.ATM;
 import view.HomeView;
+import view.InformationView;
 import view.LoginView;
 
 public class ViewManager {
@@ -18,6 +19,7 @@ public class ViewManager {
 	private Database db;					// a reference to the database
 	private BankAccount account;			// the user's bank account
 	private BankAccount destination;		// an account to which the user can transfer funds
+	private InformationView info;
 
 	/**
 	 * Constructs an instance (or object) of the ViewManager class.
@@ -50,9 +52,14 @@ public class ViewManager {
 			} 
 			else {
 				switchTo(ATM.HOME_VIEW);
-				JOptionPane.showMessageDialog(null, "Welcome " + account.getUser().getFirstName() + " " + account.getUser().getLastName() + "! Your current account (" + account.getAccountNumber() + ") has a balance of " + account.getFBalance() + ".");
+				HomeView hv = ((HomeView) views.getComponents()[ATM.HOME_VIEW_INDEX]);
+				hv.welcomeMessage(account);
+				
 				LoginView lv = ((LoginView) views.getComponents()[ATM.LOGIN_VIEW_INDEX]);
 				lv.updateErrorMessage("");
+				
+				InformationView iv = ((InformationView) views.getComponents()[ATM.INFORMATION_VIEW_INDEX]);
+				iv.buildInfoView(account);
 			}
 		} catch (NumberFormatException e) {
 			// ignore
@@ -129,5 +136,14 @@ public class ViewManager {
 	}
 	public void updateAcc() {
 		db.updateAccount(account);
+	}
+	public void updateTransAcc() {
+		db.updateAccount(account);
+	}
+	public BankAccount getTransferAccount(long accountNumber) {
+		return db.getAccount(accountNumber);
+	}
+	public int transfer(BankAccount destination, double amount) {
+		return account.transfer(destination, amount);
 	}
 }

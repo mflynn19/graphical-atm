@@ -13,12 +13,12 @@ import java.util.stream.IntStream;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import controller.ViewManager;
-import data.Database;
 import model.BankAccount;
 import model.User;
 
@@ -53,6 +53,7 @@ public class CreateView extends JPanel implements ActionListener {
 		super();
 		
 		this.manager = manager;
+		this.errorLabel = new JLabel("", SwingConstants.CENTER);
 		initialize();
 	}
 	
@@ -78,6 +79,7 @@ public class CreateView extends JPanel implements ActionListener {
 		initPINField();
 		initCancelButton();
 		initCreateButton();
+		initErrorLabel();
 		
 		errorLabel = new JLabel();
 		errorLabel.setText("You are missing a required field!");
@@ -125,7 +127,7 @@ public class CreateView extends JPanel implements ActionListener {
 		this.add(first);
 		first.setVisible(true);
 		
-		String[] days = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" };
+		String[] days = { "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" };
 		second = new JComboBox<String>(days);
 		second.setBounds(300, 90, 50, 35);
 		this.add(second);
@@ -290,20 +292,17 @@ public class CreateView extends JPanel implements ActionListener {
 			String month = first.getSelectedItem().toString();
 			String date = second.getSelectedItem().toString();
 			String year = third.getSelectedItem().toString();
-			String dob = year + month + date;
+			String dob = year.substring(1) + month + date;
 			String city = CityField.getText();
 			String zipcode = ZipField.getText();
 			String state = initial.getSelectedItem().toString();
-			String pinNumber = PINField.getText();
-			//idk whats going on with PIN now
-			
+			String pinNumber = new String(PINField.getPassword());
 			boolean create = true;
 
 			if (firstName.equals("") || lastName.equals("") || firstName.length() > 15 || lastName.length() > 20) {
 				errorLabel.setText("Incorrect name input. First Name: 1 character MIN - 15 character MAX. Last Name: 1 character MIN - 20 character MAX.");
 				create = false;
 			}
-			//error with validation probably hereeee
 			if (month.equals("") || date.equals("") || year.equals("")) {
 				errorLabel.setText("Please select a birthdate.");
 				create = false;
@@ -313,7 +312,6 @@ public class CreateView extends JPanel implements ActionListener {
 				errorLabel.setText("Please enter a 10 digit phone number.");
 				create = false;
 			}
-			//error probably here with state tooooo
 			if (street.equals("") || city.equals("") || state.equals("") || zipcode.equals("") || zipcode.matches("[a-zA-Z]+")) {
 				errorLabel.setText("Please enter all components of your address.");
 				create = false;
@@ -336,6 +334,7 @@ public class CreateView extends JPanel implements ActionListener {
 				User user = new User(Integer.parseInt(pinNumber), Integer.parseInt(dob), Long.parseLong(phone), firstName, lastName, street, city, state, zipcode);
 				BankAccount acc = new BankAccount('Y', num, 0, user);
 				manager.insertAccountFR(acc);
+				JOptionPane.showMessageDialog(null, "Welcome to the Bank! Your account number is " + num + " and your PIN is " + pinNumber + ". Please record in a secure location.");
 				this.removeAll();
 				initialize();
 			}

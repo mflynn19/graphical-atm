@@ -6,10 +6,12 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import controller.ViewManager;
+import model.BankAccount;
 
 @SuppressWarnings("serial")
 public class HomeView extends JPanel implements ActionListener {
@@ -21,6 +23,10 @@ public class HomeView extends JPanel implements ActionListener {
 	private JButton TransferButton;
 	private JButton CloseButton;
 	private JButton InfoButton;
+	private JLabel infoLabel;
+	private BankAccount account;
+	private JLabel welcomeMessage;
+	private InformationView info;
 
 	/**
 	 * Constructs an instance (or objects) of the HomeView class.
@@ -33,6 +39,14 @@ public class HomeView extends JPanel implements ActionListener {
 		
 		this.manager = manager;
 		initialize();
+	}
+	
+	public void welcomeMessage (BankAccount account) {
+		this.account = account;
+		if (this.account != null) {
+			welcomeMessage.setText("Welcome " + account.getUser().getFirstName() + " "  + account.getUser().getLastName() + "!");
+			infoLabel.setText("Account Number: " + account.getAccountNumber() + " | " + "Balance: " + account.getFBalance());
+		} 
 	}
 	
 	///////////////////// PRIVATE METHODS /////////////////////////////////////////////
@@ -50,6 +64,8 @@ public class HomeView extends JPanel implements ActionListener {
 		initInfoButton();
 		initCloseButton();
 		initLogoutButton();
+		initInfoLabel();
+		initwelcomeMessage();
 	}
 	
 	private void initDepositButton() {	
@@ -98,6 +114,20 @@ public class HomeView extends JPanel implements ActionListener {
 		logoutButton.addActionListener(this);
 		
 		this.add(logoutButton);
+	}
+	
+	public void initwelcomeMessage() {
+		welcomeMessage  = new JLabel("");
+		welcomeMessage.setBounds(150, 10, 300, 35);
+		
+		this.add(welcomeMessage);
+	}
+	
+	public void initInfoLabel() {
+		infoLabel  = new JLabel("");
+		infoLabel.setBounds(150, 50, 300, 35);
+		
+		this.add(infoLabel);
 	}
 	
 	/*

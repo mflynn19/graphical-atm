@@ -1,7 +1,6 @@
 package view;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,24 +9,23 @@ import java.io.ObjectOutputStream;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import controller.ViewManager;
-import data.Database;
 import model.BankAccount;
 
 @SuppressWarnings("serial")
 public class DepositView extends JPanel implements ActionListener {
 	
+	private BankAccount account;			// the user's bank account
 	private ViewManager manager;		// manages interactions between the views, model, and database
-	private Database db;					// a reference to the database
 	private JTextField DepositField;
 	private JButton CancelButton;
 	private JButton ConfirmButton;
 	private JLabel errorMessageLabel;
+	private HomeView home;
 
 	/**
 	 * Constructs an instance (or object) of the CreateView class.
@@ -39,6 +37,7 @@ public class DepositView extends JPanel implements ActionListener {
 		super();
 		
 		this.manager = manager;
+		this.errorMessageLabel = new JLabel("", SwingConstants.CENTER);
 		initialize();
 	}
 	
@@ -54,6 +53,7 @@ public class DepositView extends JPanel implements ActionListener {
 		initDepositField();
 		initCancelButton();
 		initConfirmButton();
+		initErrorMessageLabel();
 	}
 	
 	private void initDepositField() {
@@ -83,6 +83,14 @@ public class DepositView extends JPanel implements ActionListener {
 		ConfirmButton.addActionListener(this);
 		
 		this.add(ConfirmButton);
+	}
+	
+	private void initErrorMessageLabel() {
+		errorMessageLabel.setBounds(205, 210, 100, 35);
+		errorMessageLabel.setFont(new Font("DialogInput", Font.ITALIC, 14));
+		errorMessageLabel.setForeground(Color.RED);
+		
+		this.add(errorMessageLabel);
 	}
 	
 	/*

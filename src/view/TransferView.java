@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,6 +14,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import controller.ViewManager;
+import model.BankAccount;
 
 @SuppressWarnings("serial")
 public class TransferView extends JPanel implements ActionListener {
@@ -22,6 +24,8 @@ public class TransferView extends JPanel implements ActionListener {
 	private JButton ConfirmButton;
 	private JTextField TransferField;
 	private JTextField DestinationField;
+	private JLabel errorMessageLabel;
+	
 	/**
 	 * Constructs an instance (or object) of the CreateView class.
 	 * 
@@ -32,6 +36,7 @@ public class TransferView extends JPanel implements ActionListener {
 		super();
 		
 		this.manager = manager;
+		this.errorMessageLabel = new JLabel("", SwingConstants.CENTER);
 		initialize();
 	}
 	
@@ -48,6 +53,7 @@ public class TransferView extends JPanel implements ActionListener {
 		initDestinationField();
 		initCancelButton();
 		initConfirmButton();
+		initErrorMessageLabel();
 	}
 	
 	private void initTransferField() {
@@ -92,6 +98,14 @@ public class TransferView extends JPanel implements ActionListener {
 		this.add(ConfirmButton);
 	}
 	
+	private void initErrorMessageLabel() {
+		errorMessageLabel.setBounds(205, 240, 250, 35);
+		errorMessageLabel.setFont(new Font("DialogInput", Font.ITALIC, 14));
+		errorMessageLabel.setForeground(Color.RED);
+		
+		this.add(errorMessageLabel);
+	}
+	
 	/*
 	 * CreateView is not designed to be serialized, and attempts to serialize will throw an IOException.
 	 * 
@@ -118,7 +132,20 @@ public class TransferView extends JPanel implements ActionListener {
 			manager.switchTo(ATM.HOME_VIEW);
 		}
 		if (source.equals(ConfirmButton)) {
-			
+			double amount = Double.parseDouble(TransferField.getText());
+			long otherAcc = Long.parseLong(DestinationField.getText());
+			BankAccount destination = manager.getTransferAccount(otherAcc);
+			if (manager.transfer(destination, amount) != ATM.SUCCESS) {
+				errorMessageLabel.setText("Invalid transfer amount or account number.");
+			}
+			else {
+				System.out.println("from transfer view" + destination);
+				manager.updateAcc();
+				manager.updateTransAcc();
+				manager.switchTo(ATM.HOME_VIEW);
+			}
+			this.removeAll();
+			this.initialize();
 		}
 	}
 }

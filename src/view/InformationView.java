@@ -14,7 +14,6 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import controller.ViewManager;
-import data.Database;
 import model.BankAccount;
 
 @SuppressWarnings("serial")
@@ -22,7 +21,6 @@ public class InformationView extends JPanel implements ActionListener {
 	
 	private ViewManager manager;		// manages interactions between the views, model, and database
 	private BankAccount account;
-	private Database db;
 	private JButton BackButton;
 	private JButton EditButton;
 	private JTextField AccountNumberField;
@@ -50,6 +48,22 @@ public class InformationView extends JPanel implements ActionListener {
 		
 		this.manager = manager;
 		initialize();
+	}
+	
+	public void buildInfoView (BankAccount account) {
+		this.account = account;
+		if (this.account != null) {
+			AccountNumberField.setText(Long.toString(account.getAccountNumber()));
+			FirstNameField.setText(account.getUser().getFirstName());
+			LastNameField.setText(account.getUser().getLastName());
+			StreetAddressField.setText(account.getUser().getStreetAddress());
+			CityField.setText(account.getUser().getCity());
+			StateField.setSelectedItem(account.getUser().getState());
+			ZIPField.setText(account.getUser().getZip());
+			PhoneField.setText(Long.toString(account.getUser().getPhone()));
+			DOBField.setText(Integer.toString(account.getUser().getDob()));
+
+		}
 	}
 	
 	///////////////////// PRIVATE METHODS /////////////////////////////////////////////
@@ -87,8 +101,6 @@ public class InformationView extends JPanel implements ActionListener {
 		
 		this.add(label);
 		this.add(AccountNumberField);
-		//going to throw error in initialization
-		//WithdrawlField.setText(Long.toString(account.getAccountNumber()));
 		AccountNumberField.setEditable(false);
 	}
 	
@@ -103,8 +115,6 @@ public class InformationView extends JPanel implements ActionListener {
 		
 		this.add(label);
 		this.add(FirstNameField);
-		//going to throw error in initialization
-		//WithdrawlField.setText(Long.toString(account.getAccountNumber()));
 		FirstNameField.setEditable(false);
 	}
 	
@@ -119,8 +129,6 @@ public class InformationView extends JPanel implements ActionListener {
 		
 		this.add(label);
 		this.add(LastNameField);
-		//going to throw error in initialization
-		//WithdrawlField.setText(Long.toString(account.getAccountNumber()));
 		LastNameField.setEditable(false);
 	}
 	
@@ -135,8 +143,6 @@ public class InformationView extends JPanel implements ActionListener {
 		
 		this.add(label);
 		this.add(StreetAddressField);
-		//going to throw error in initialization
-		//WithdrawlField.setText(Long.toString(account.getAccountNumber()));
 		StreetAddressField.setEditable(false);
 	}
 	
@@ -151,8 +157,6 @@ public class InformationView extends JPanel implements ActionListener {
 		
 		this.add(label);
 		this.add(CityField);
-		//going to throw error in initialization
-		//WithdrawlField.setText(Long.toString(account.getAccountNumber()));
 		CityField.setEditable(false);
 	}
 	
@@ -167,7 +171,6 @@ public class InformationView extends JPanel implements ActionListener {
 		StateField = new JComboBox<String>(states);
 		StateField.setBounds(190, 260, 200, 35);
 		this.add(StateField);
-		//WithdrawlField.setText(Long.toString(account.getAccountNumber()));
 		StateField.setEnabled(false);
 	}
 	
@@ -182,8 +185,6 @@ public class InformationView extends JPanel implements ActionListener {
 		
 		this.add(label);
 		this.add(ZIPField);
-		//going to throw error in initialization
-		//WithdrawlField.setText(Long.toString(account.getAccountNumber()));
 		ZIPField.setEditable(false);
 	}
 	
@@ -198,8 +199,6 @@ public class InformationView extends JPanel implements ActionListener {
 		
 		this.add(label);
 		this.add(PhoneField);
-		//going to throw error in initialization
-		//WithdrawlField.setText(Long.toString(account.getAccountNumber()));
 		PhoneField.setEditable(false);
 	}
 	
@@ -214,8 +213,6 @@ public class InformationView extends JPanel implements ActionListener {
 		
 		this.add(label);
 		this.add(DOBField);
-		//going to throw error in initialization
-		//WithdrawlField.setText(Long.toString(account.getAccountNumber()));
 		DOBField.setEditable(false);
 	}
 	
@@ -236,7 +233,7 @@ public class InformationView extends JPanel implements ActionListener {
 	}
 	
 	private void initCancelButton() {	
-		CancelButton = new JButton("Edit");
+		CancelButton = new JButton("Cancel");
 		CancelButton.setBounds(270, 10, 100, 35);
 		CancelButton.addActionListener(this);	
 		
@@ -246,7 +243,7 @@ public class InformationView extends JPanel implements ActionListener {
 	}
 	
 	private void initSaveButton() {	
-		SaveButton = new JButton("Edit");
+		SaveButton = new JButton("Save");
 		SaveButton.setBounds(160, 10, 100, 35);
 		SaveButton.addActionListener(this);	
 		
@@ -285,16 +282,22 @@ public class InformationView extends JPanel implements ActionListener {
 		else if (source.equals(EditButton)) {
 			StreetAddressField.setEditable(true);
 			CityField.setEditable(true);
-			StateField.setEditable(true);
+			StateField.setEnabled(true);
 			ZIPField.setEditable(true);
 			PhoneField.setEditable(true);
-			//PINField.setEditable(true); doesn't exist here???
-			//add new buttons and dropdowns etc
 			CancelButton.setVisible(true);
 			SaveButton.setVisible(true);
+			EditButton.setVisible(false);
+			
 			if (source.equals(CancelButton)) {
-				this.removeAll();
-				this.initialize();
+				StreetAddressField.setEditable(false);
+				CityField.setEditable(false);
+				StateField.setEnabled(false);
+				ZIPField.setEditable(false);
+				PhoneField.setEditable(false);
+				CancelButton.setVisible(false);
+				SaveButton.setVisible(false);
+				EditButton.setVisible(true);
 			}
 			else if (source.equals(SaveButton)) {
 				manager.updateAcc();
