@@ -94,7 +94,7 @@ public class DepositView extends JPanel implements ActionListener {
 	}
 	
 	private void initErrorMessageLabel() {
-		errorMessageLabel.setBounds(205, 210, 100, 35);
+		errorMessageLabel.setBounds(50, 210, 500, 35);
 		errorMessageLabel.setFont(new Font("DialogInput", Font.ITALIC, 14));
 		errorMessageLabel.setForeground(Color.RED);
 		
@@ -103,7 +103,7 @@ public class DepositView extends JPanel implements ActionListener {
 	
 	private void initInfoLabel() {
 		infoLabel  = new JLabel("");
-		infoLabel.setBounds(30, 30, 350, 35);
+		infoLabel.setBounds(10, 30, 500, 35);
 		
 		this.add(infoLabel);
 	}
@@ -137,17 +137,22 @@ public class DepositView extends JPanel implements ActionListener {
 			this.initialize();
 		}
 		if (source.equals(ConfirmButton)) {
-			double amount = Double.parseDouble(DepositField.getText());
-			if (manager.deposit(amount) != ATM.SUCCESS) {
-				errorMessageLabel.setText("Invalid deposit amount.");
+			try {
+				double amount = Double.parseDouble(DepositField.getText());
+				if (manager.deposit(amount) != ATM.SUCCESS) {
+					errorMessageLabel.setText("Invalid deposit amount.");
+				}
+				else {
+					manager.updateAcc(null);
+					manager.sendBankAccount(account, "home");
+					manager.switchTo(ATM.HOME_VIEW);
+				}
+				this.removeAll();
+				this.initialize();
 			}
-			else {
-				manager.updateAcc(null);
-				manager.sendBankAccount(account, "home");
-				manager.switchTo(ATM.HOME_VIEW);
-			}
-			this.removeAll();
-			this.initialize();
+		catch (NumberFormatException e2) {
+			errorMessageLabel.setText("Invalid input.");
 		}
 	}
+}
 }

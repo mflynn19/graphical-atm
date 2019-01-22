@@ -94,7 +94,7 @@ public class TransferView extends JPanel implements ActionListener {
 	
 	public void initInfoLabel() {
 		infoLabel  = new JLabel("");
-		infoLabel.setBounds(30, 30, 350, 35);
+		infoLabel.setBounds(10, 30, 500, 35);
 		
 		this.add(infoLabel);
 	}
@@ -116,7 +116,7 @@ public class TransferView extends JPanel implements ActionListener {
 	}
 	
 	private void initErrorMessageLabel() {
-		errorMessageLabel.setBounds(150, 240, 250, 35);
+		errorMessageLabel.setBounds(150, 240, 500, 35);
 		errorMessageLabel.setFont(new Font("DialogInput", Font.ITALIC, 14));
 		errorMessageLabel.setForeground(Color.RED);
 		
@@ -149,17 +149,21 @@ public class TransferView extends JPanel implements ActionListener {
 			manager.switchTo(ATM.HOME_VIEW);
 		}
 		if (source.equals(ConfirmButton)) {
-			double amount = Double.parseDouble(TransferField.getText());
-			long otherAcc = Long.parseLong(DestinationField.getText());
-			BankAccount destination = manager.getTransferAccount(otherAcc);
-			if (manager.transfer(destination, amount) != ATM.SUCCESS) {
+			try {
+				double amount = Double.parseDouble(TransferField.getText());
+				long otherAcc = Long.parseLong(DestinationField.getText());
+				BankAccount destination = manager.getTransferAccount(otherAcc);
+				if (manager.transfer(destination, amount) != ATM.SUCCESS) {
+					errorMessageLabel.setText("Invalid transfer amount or account number.");
+				}
+				else {
+					manager.updateAcc(destination);
+					manager.updateTransAcc();
+					manager.sendBankAccount(account, "home");
+					manager.switchTo(ATM.HOME_VIEW);
+				}
+			} catch (NumberFormatException e2) {
 				errorMessageLabel.setText("Invalid transfer amount or account number.");
-			}
-			else {
-				manager.updateAcc(destination);
-				manager.updateTransAcc();
-				manager.sendBankAccount(account, "home");
-				manager.switchTo(ATM.HOME_VIEW);
 			}
 			this.removeAll();
 			this.initialize();

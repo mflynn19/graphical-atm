@@ -160,7 +160,6 @@ public class ViewManager {
 	public void updateAcc(BankAccount destination) {
 		db.updateAccount(account);
 		if (destination != null) db.updateAccount(destination);
-		System.out.println("worked");
 	}
 	public void updateTransAcc() {
 		db.updateAccount(account);
