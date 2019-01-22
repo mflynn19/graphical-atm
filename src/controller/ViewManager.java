@@ -9,7 +9,6 @@ import javax.swing.JOptionPane;
 import data.Database;
 import model.BankAccount;
 import view.ATM;
-import view.InformationView;
 import view.LoginView;
 
 public class ViewManager {
@@ -17,8 +16,7 @@ public class ViewManager {
 	private Container views;				// the collection of all views in the application
 	private Database db;					// a reference to the database
 	private BankAccount account;			// the user's bank account
-	private BankAccount destination;		// an account to which the user can transfer funds
-	private InformationView info;
+	//private BankAccount destination;		// an account to which the user can transfer funds
 
 	/**
 	 * Constructs an instance (or object) of the ViewManager class.
@@ -53,6 +51,9 @@ public class ViewManager {
 		case "info":
 			view.InformationView iv = ((view.InformationView) views.getComponents()[ATM.INFORMATION_VIEW_INDEX]);
 			iv.setView(account);
+			break;
+		case "manager":
+			this.account = account;
 			break;
 	}
 	}
@@ -156,8 +157,9 @@ public class ViewManager {
 	public int withdraw(double amount) {
 		return account.withdraw(amount);
 	}
-	public void updateAcc() {
+	public void updateAcc(BankAccount destination) {
 		db.updateAccount(account);
+		if (destination != null) db.updateAccount(destination);
 		System.out.println("worked");
 	}
 	public void updateTransAcc() {

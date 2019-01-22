@@ -130,7 +130,7 @@ public class WithdrawlView extends JPanel implements ActionListener {
 			}
 			else {
 				manager.withdraw(number);
-				manager.updateAcc();
+				manager.updateAcc(null);
 				manager.sendBankAccount(account, "home");
 				manager.switchTo(ATM.HOME_VIEW);
 			}

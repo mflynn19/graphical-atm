@@ -142,7 +142,7 @@ public class DepositView extends JPanel implements ActionListener {
 				errorMessageLabel.setText("Invalid deposit amount.");
 			}
 			else {
-				manager.updateAcc();
+				manager.updateAcc(null);
 				manager.sendBankAccount(account, "home");
 				manager.switchTo(ATM.HOME_VIEW);
 			}

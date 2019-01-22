@@ -323,10 +323,13 @@ public class InformationView extends JPanel implements ActionListener {
 		else if (source.equals(SaveButton)) {
 			boolean create = true;
 			
-			String phone = PhoneField.getText();
-			if(phone.length() != 10 || phone.matches("[a-zA-Z]+")) {
+			long phone = 0;
+			String phoneString = PhoneField.getText();
+			if(phoneString.length() != 10 || phoneString.matches("[a-zA-Z]+")) {
 				errorLabel.setText("Please enter a 10 digit phone number.");
 				create = false;
+			} else {
+				phone = Long.parseLong(phoneString);
 			}
 			
 			String street = StreetAddressField.getText();
@@ -339,8 +342,15 @@ public class InformationView extends JPanel implements ActionListener {
 			}
 			
 			if(create) {
-				//update not working
-				manager.updateAcc();
+				account.getUser().setPhone(phone);
+				account.getUser().setStreetAddress(street);
+				account.getUser().setCity(city);
+				account.getUser().setState(state);
+				account.getUser().setZip(zipcode);
+				
+				manager.sendBankAccount(account, "manager");
+				manager.sendBankAccount(account, "home");
+				manager.updateAcc(null);
 
 				StreetAddressField.setEditable(false);
 				CityField.setEditable(false);

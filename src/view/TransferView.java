@@ -156,7 +156,7 @@ public class TransferView extends JPanel implements ActionListener {
 				errorMessageLabel.setText("Invalid transfer amount or account number.");
 			}
 			else {
-				manager.updateAcc();
+				manager.updateAcc(destination);
 				manager.updateTransAcc();
 				manager.sendBankAccount(account, "home");
 				manager.switchTo(ATM.HOME_VIEW);
