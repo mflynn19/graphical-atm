@@ -20,11 +20,13 @@ import model.BankAccount;
 public class TransferView extends JPanel implements ActionListener {
 	
 	private ViewManager manager;		// manages interactions between the views, model, and database
+	private BankAccount account;
 	private JButton CancelButton;
 	private JButton ConfirmButton;
 	private JTextField TransferField;
 	private JTextField DestinationField;
 	private JLabel errorMessageLabel;
+	private JLabel infoLabel;
 	
 	/**
 	 * Constructs an instance (or object) of the CreateView class.
@@ -40,6 +42,12 @@ public class TransferView extends JPanel implements ActionListener {
 		initialize();
 	}
 	
+	public void setMessage (BankAccount account) {
+		this.account = account;
+		if (this.account != null) {
+			infoLabel.setText("Your Account Number: " + account.getAccountNumber() + " | " + "Balance: " + account.getFBalance());
+		} 
+	}
 	///////////////////// PRIVATE METHODS /////////////////////////////////////////////
 	
 	/*
@@ -54,6 +62,8 @@ public class TransferView extends JPanel implements ActionListener {
 		initCancelButton();
 		initConfirmButton();
 		initErrorMessageLabel();
+		initInfoLabel();
+		
 	}
 	
 	private void initTransferField() {
@@ -82,6 +92,13 @@ public class TransferView extends JPanel implements ActionListener {
 		this.add(DestinationField);
 	}
 	
+	public void initInfoLabel() {
+		infoLabel  = new JLabel("");
+		infoLabel.setBounds(30, 30, 350, 35);
+		
+		this.add(infoLabel);
+	}
+	
 	private void initCancelButton() {	
 		CancelButton = new JButton("Cancel");
 		CancelButton.setBounds(305, 200, 100, 35);
@@ -99,7 +116,7 @@ public class TransferView extends JPanel implements ActionListener {
 	}
 	
 	private void initErrorMessageLabel() {
-		errorMessageLabel.setBounds(205, 240, 250, 35);
+		errorMessageLabel.setBounds(150, 240, 250, 35);
 		errorMessageLabel.setFont(new Font("DialogInput", Font.ITALIC, 14));
 		errorMessageLabel.setForeground(Color.RED);
 		
@@ -139,9 +156,9 @@ public class TransferView extends JPanel implements ActionListener {
 				errorMessageLabel.setText("Invalid transfer amount or account number.");
 			}
 			else {
-				System.out.println("from transfer view" + destination);
 				manager.updateAcc();
 				manager.updateTransAcc();
+				manager.sendBankAccount(account, "home");
 				manager.switchTo(ATM.HOME_VIEW);
 			}
 			this.removeAll();

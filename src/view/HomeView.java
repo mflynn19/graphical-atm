@@ -26,7 +26,6 @@ public class HomeView extends JPanel implements ActionListener {
 	private JLabel infoLabel;
 	private BankAccount account;
 	private JLabel welcomeMessage;
-	private InformationView info;
 
 	/**
 	 * Constructs an instance (or objects) of the HomeView class.
@@ -41,7 +40,7 @@ public class HomeView extends JPanel implements ActionListener {
 		initialize();
 	}
 	
-	public void welcomeMessage (BankAccount account) {
+	public void setMessage (BankAccount account) {
 		this.account = account;
 		if (this.account != null) {
 			welcomeMessage.setText("Welcome " + account.getUser().getFirstName() + " "  + account.getUser().getLastName() + "!");
@@ -116,14 +115,14 @@ public class HomeView extends JPanel implements ActionListener {
 		this.add(logoutButton);
 	}
 	
-	public void initwelcomeMessage() {
+	private void initwelcomeMessage() {
 		welcomeMessage  = new JLabel("");
 		welcomeMessage.setBounds(150, 10, 300, 35);
 		
 		this.add(welcomeMessage);
 	}
 	
-	public void initInfoLabel() {
+	private void initInfoLabel() {
 		infoLabel  = new JLabel("");
 		infoLabel.setBounds(150, 50, 300, 35);
 		
@@ -155,15 +154,19 @@ public class HomeView extends JPanel implements ActionListener {
 		Object source = e.getSource();
 		
 		if (source.equals(DepositButton)) {
+			manager.sendBankAccount(account, "deposit");
 			manager.switchTo(ATM.DEPOSIT_VIEW);
 		}
 		else if (source.equals(WithdrawlButton)) {
+			manager.sendBankAccount(account, "withdraw");
 			manager.switchTo(ATM.WITHDRAWL_VIEW);
 		}
 		else if (source.equals(TransferButton)) {
+			manager.sendBankAccount(account, "transfer");
 			manager.switchTo(ATM.TRANSFER_VIEW);
 		}
 		else if (source.equals(InfoButton)) {
+			manager.sendBankAccount(account, "info");
 			manager.switchTo(ATM.INFORMATION_VIEW);
 		}
 		else if (source.equals(CloseButton)) {

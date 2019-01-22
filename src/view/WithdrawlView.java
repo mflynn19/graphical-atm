@@ -24,6 +24,7 @@ public class WithdrawlView extends JPanel implements ActionListener {
 	private JTextField WithdrawlField;
 	private JButton CancelButton;
 	private JButton ConfirmButton;
+	private JLabel infoLabel;
 	/**
 	 * Constructs an instance (or object) of the CreateView class.
 	 * 
@@ -37,6 +38,12 @@ public class WithdrawlView extends JPanel implements ActionListener {
 		initialize();
 	}
 	
+	public void setMessage (BankAccount account) {
+		this.account = account;
+		if (this.account != null) {
+			infoLabel.setText("Your Account Number: " + account.getAccountNumber() + " | " + "Balance: " + account.getFBalance());
+		} 
+	}
 	///////////////////// PRIVATE METHODS /////////////////////////////////////////////
 	
 	/*
@@ -49,6 +56,7 @@ public class WithdrawlView extends JPanel implements ActionListener {
 		initWithdrawlField();
 		initCancelButton();
 		initConfirmButton();
+		initInfoLabel();
 	}
 	
 	private void initWithdrawlField() {
@@ -62,6 +70,13 @@ public class WithdrawlView extends JPanel implements ActionListener {
 		
 		this.add(label);
 		this.add(WithdrawlField);
+	}
+	
+	public void initInfoLabel() {
+		infoLabel  = new JLabel("");
+		infoLabel.setBounds(30, 30, 350, 35);
+		
+		this.add(infoLabel);
 	}
 	
 	private void initCancelButton() {	
@@ -116,6 +131,7 @@ public class WithdrawlView extends JPanel implements ActionListener {
 			else {
 				manager.withdraw(number);
 				manager.updateAcc();
+				manager.sendBankAccount(account, "home");
 				manager.switchTo(ATM.HOME_VIEW);
 			}
 			this.removeAll();

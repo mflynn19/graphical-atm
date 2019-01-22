@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -34,8 +35,7 @@ public class InformationView extends JPanel implements ActionListener {
 	private JTextField PhoneField;
 	private JButton CancelButton;
 	private JButton SaveButton;
-
-
+	private JLabel errorLabel;
 
 	/**
 	 * Constructs an instance (or object) of the CreateView class.
@@ -47,10 +47,11 @@ public class InformationView extends JPanel implements ActionListener {
 		super();
 		
 		this.manager = manager;
+		this.errorLabel = new JLabel("", SwingConstants.CENTER);
 		initialize();
 	}
 	
-	public void buildInfoView (BankAccount account) {
+	public void setView (BankAccount account) {
 		this.account = account;
 		if (this.account != null) {
 			AccountNumberField.setText(Long.toString(account.getAccountNumber()));
@@ -88,6 +89,7 @@ public class InformationView extends JPanel implements ActionListener {
 		initEditButton();
 		initCancelButton();
 		initSaveButton();
+		initErrorLabel();
 	}
 	
 	private void initAccountNumberField() {
@@ -252,6 +254,15 @@ public class InformationView extends JPanel implements ActionListener {
 
 	}
 	
+	private void initErrorLabel() {
+		errorLabel.setBounds(105, 410, 175, 35);
+		errorLabel.setFont(new Font("DialogInput", Font.ITALIC, 14));
+		errorLabel.setForeground(Color.RED);
+		
+		this.add(errorLabel);
+		
+	}
+	
 	/*
 	 * CreateView is not designed to be serialized, and attempts to serialize will throw an IOException.
 	 * 
@@ -275,9 +286,17 @@ public class InformationView extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		Object source = e.getSource();
 		if (source.equals(BackButton)) {
-			manager.switchTo(ATM.HOME_VIEW);
 			this.removeAll();
-			this.initialize();
+			initialize();
+			StreetAddressField.setEditable(false);
+			CityField.setEditable(false);
+			StateField.setEnabled(false);
+			ZIPField.setEditable(false);
+			PhoneField.setEditable(false);
+			CancelButton.setVisible(false);
+			SaveButton.setVisible(false);
+			EditButton.setVisible(true);
+			manager.switchTo(ATM.HOME_VIEW);
 		}
 		else if (source.equals(EditButton)) {
 			StreetAddressField.setEditable(true);
@@ -288,8 +307,41 @@ public class InformationView extends JPanel implements ActionListener {
 			CancelButton.setVisible(true);
 			SaveButton.setVisible(true);
 			EditButton.setVisible(false);
+		}
+		else if (source.equals(CancelButton)) {
+			this.removeAll();
+			initialize();
+			StreetAddressField.setEditable(false);
+			CityField.setEditable(false);
+			StateField.setEnabled(false);
+			ZIPField.setEditable(false);
+			PhoneField.setEditable(false);
+			CancelButton.setVisible(false);
+			SaveButton.setVisible(false);
+			EditButton.setVisible(true);
+		}
+		else if (source.equals(SaveButton)) {
+			boolean create = true;
 			
-			if (source.equals(CancelButton)) {
+			String phone = PhoneField.getText();
+			if(phone.length() != 10 || phone.matches("[a-zA-Z]+")) {
+				errorLabel.setText("Please enter a 10 digit phone number.");
+				create = false;
+			}
+			
+			String street = StreetAddressField.getText();
+			String city = CityField.getText();
+			String state = StateField.getSelectedItem().toString();
+			String zipcode = ZIPField.getText();
+			if (street.equals("") || city.equals("") || state.equals("") || zipcode.equals("") || zipcode.matches("[a-zA-Z]+")) {
+				errorLabel.setText("Please enter all components of your address.");
+				create = false;
+			}
+			
+			if(create) {
+				//update not working
+				manager.updateAcc();
+
 				StreetAddressField.setEditable(false);
 				CityField.setEditable(false);
 				StateField.setEnabled(false);
@@ -299,9 +351,6 @@ public class InformationView extends JPanel implements ActionListener {
 				SaveButton.setVisible(false);
 				EditButton.setVisible(true);
 			}
-			else if (source.equals(SaveButton)) {
-				manager.updateAcc();
-			}
+		}
 	}
-}
 }

@@ -99,10 +99,11 @@ public class CreateView extends JPanel implements ActionListener {
 		this.add(FnameField);
 	}
 	
+	//x, y, width, height starts at 0,0 top left
+
 	private void initLnameField() {
 		JLabel label = new JLabel("Last Name", SwingConstants.RIGHT);
 		label.setBounds(100, 50, 95, 35);
-		//x, y, width, height starts at 0,0 top left
 		label.setLabelFor(LnameField);
 		label.setFont(new Font("DialogInput", Font.BOLD, 14));
 		
@@ -120,7 +121,6 @@ public class CreateView extends JPanel implements ActionListener {
 		label.setFont(new Font("DialogInput", Font.BOLD, 14));
 		this.add(label);
 		
-		//do three combo boxes with months days and years
 		String[] months = { "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12" };
 		first = new JComboBox<String>(months);
 		first.setBounds(205, 90, 95, 35);
@@ -257,7 +257,6 @@ public class CreateView extends JPanel implements ActionListener {
 		errorLabel.setForeground(Color.RED);
 		
 		this.add(errorLabel);
-		
 	}
 	
 	/*

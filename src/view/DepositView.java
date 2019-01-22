@@ -25,7 +25,7 @@ public class DepositView extends JPanel implements ActionListener {
 	private JButton CancelButton;
 	private JButton ConfirmButton;
 	private JLabel errorMessageLabel;
-	private HomeView home;
+	private JLabel infoLabel;
 
 	/**
 	 * Constructs an instance (or object) of the CreateView class.
@@ -41,6 +41,13 @@ public class DepositView extends JPanel implements ActionListener {
 		initialize();
 	}
 	
+	public void setMessage (BankAccount account) {
+		this.account = account;
+		if (this.account != null) {
+			infoLabel.setText("Your Account Number: " + account.getAccountNumber() + " | " + "Balance: " + account.getFBalance());
+		} 
+	}
+	
 	///////////////////// PRIVATE METHODS /////////////////////////////////////////////
 	
 	/*
@@ -54,6 +61,7 @@ public class DepositView extends JPanel implements ActionListener {
 		initCancelButton();
 		initConfirmButton();
 		initErrorMessageLabel();
+		initInfoLabel();
 	}
 	
 	private void initDepositField() {
@@ -93,6 +101,13 @@ public class DepositView extends JPanel implements ActionListener {
 		this.add(errorMessageLabel);
 	}
 	
+	private void initInfoLabel() {
+		infoLabel  = new JLabel("");
+		infoLabel.setBounds(30, 30, 350, 35);
+		
+		this.add(infoLabel);
+	}
+	
 	/*
 	 * CreateView is not designed to be serialized, and attempts to serialize will throw an IOException.
 	 * 
@@ -128,6 +143,7 @@ public class DepositView extends JPanel implements ActionListener {
 			}
 			else {
 				manager.updateAcc();
+				manager.sendBankAccount(account, "home");
 				manager.switchTo(ATM.HOME_VIEW);
 			}
 			this.removeAll();

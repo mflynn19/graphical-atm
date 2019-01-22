@@ -9,7 +9,6 @@ import javax.swing.JOptionPane;
 import data.Database;
 import model.BankAccount;
 import view.ATM;
-import view.HomeView;
 import view.InformationView;
 import view.LoginView;
 
@@ -33,6 +32,30 @@ public class ViewManager {
 		this.db = new Database();
 	}
 	
+	public void sendBankAccount(BankAccount account, String view) {
+		switch (view) {
+		case "home":
+			view.HomeView hv = ((view.HomeView) views.getComponents()[ATM.HOME_VIEW_INDEX]);
+			hv.setMessage(account);
+			break;
+		case "deposit":
+			view.DepositView dv = ((view.DepositView) views.getComponents()[ATM.DEPOSIT_VIEW_INDEX]);
+			dv.setMessage(account);
+			break;
+		case "withdraw":
+			view.WithdrawlView wv = ((view.WithdrawlView) views.getComponents()[ATM.WITHDRAWL_VIEW_INDEX]);
+			wv.setMessage(account);
+			break;
+		case "transfer":
+			view.TransferView tv = ((view.TransferView) views.getComponents()[ATM.TRANSFER_VIEW_INDEX]);
+			tv.setMessage(account);
+			break;
+		case "info":
+			view.InformationView iv = ((view.InformationView) views.getComponents()[ATM.INFORMATION_VIEW_INDEX]);
+			iv.setView(account);
+			break;
+	}
+	}
 	///////////////////// INSTANCE METHODS ////////////////////////////////////////////
 	
 	/**
@@ -46,20 +69,19 @@ public class ViewManager {
 		try {
 			account = (db.getAccount(Long.valueOf(accountNumber), Integer.valueOf(new String(pin))));
 			
-			if (account == null) {
+			if (account == null || account.getStatus() == 'N') {
 				LoginView lv = ((LoginView) views.getComponents()[ATM.LOGIN_VIEW_INDEX]);
 				lv.updateErrorMessage("Invalid account number and/or PIN.");
 			} 
 			else {
+				sendBankAccount(account, "home");
+				sendBankAccount(account, "withdraw");
+				sendBankAccount(account, "transfer");
+				sendBankAccount(account, "info");
 				switchTo(ATM.HOME_VIEW);
-				HomeView hv = ((HomeView) views.getComponents()[ATM.HOME_VIEW_INDEX]);
-				hv.welcomeMessage(account);
 				
 				LoginView lv = ((LoginView) views.getComponents()[ATM.LOGIN_VIEW_INDEX]);
 				lv.updateErrorMessage("");
-				
-				InformationView iv = ((InformationView) views.getComponents()[ATM.INFORMATION_VIEW_INDEX]);
-				iv.buildInfoView(account);
 			}
 		} catch (NumberFormatException e) {
 			// ignore
@@ -136,6 +158,7 @@ public class ViewManager {
 	}
 	public void updateAcc() {
 		db.updateAccount(account);
+		System.out.println("worked");
 	}
 	public void updateTransAcc() {
 		db.updateAccount(account);
